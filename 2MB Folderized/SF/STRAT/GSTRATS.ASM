@@ -2038,14 +2038,29 @@ Pelaser_strat
 	s_remove_ifplayerdead	x
 	s_clr_alsflag		x,colldisable
 	
-	s_add_vecs2pos		x
-
-; Lifetime is in video frames, matching movement's framer / 3 scale.
-; Saturate at zero: a long update must not wrap the byte counter.
-	a8
+; Stock's tenth step removes the laser before collision; its last hittable
+; position is at 27 video frames. Keep that endpoint for a short final step.
+	lda	al_count,x
+	sec
+	sbc	#3
+	beq	.expired
+	bcc	.expired
+	cmp	framer
+	bcs	.fullstep
 	lda	framer
-	cmp	al_count,x
-	bcs	.expired
+	pha
+	lda	al_count,x
+	sec
+	sbc	#3
+	sta	framer
+	s_add_vecs2pos		x
+	lda	#3
+	sta	al_count,x
+	pla
+	sta	framer
+	s_brl			.lnd
+.fullstep
+	s_add_vecs2pos		x
 	lda	al_count,x
 	sec
 	sbc	framer

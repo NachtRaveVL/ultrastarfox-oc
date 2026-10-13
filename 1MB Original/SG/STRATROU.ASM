@@ -560,6 +560,16 @@ addalvecs_l
 	a8
 	rtl
 
+; a8 -> a8: subtract elapsed three-video-frame ticks, saturating at zero.
+tickdownA_l
+	sec
+	sbc.l	visualticks
+	bcs	.ready
+	lda	#0
+.ready
+	cmp	#0
+	rtl
+
 ; a16i16 -> a16i16: scale signed A by framer / 3.
 ; Preserve X, Y, DB and the scratch words used by addalvecs_scale.
 framescaleA_l

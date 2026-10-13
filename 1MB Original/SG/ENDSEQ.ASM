@@ -398,6 +398,13 @@ end_endseq2	plp
 endtrans_l	jsr	endtrans
 	rtl
 endtrans	a8i16
+	php
+	sei
+	lda	framec
+	sta	framer
+	stz	framec
+	plp
+	jsl	visualclock_l
 .notfinished
 	lda	trans_flag
 	cmp	#32

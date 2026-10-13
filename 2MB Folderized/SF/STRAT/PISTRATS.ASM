@@ -664,7 +664,10 @@ playerExitBasewait_strat
 	s_jmp_varNE	B,psvar_byte1,#(17+((1000/pexitbasespeed)*2)-17),.nbgms
 .nbgms
 	s_set_pos		x,#-27<<mybase_scale,#-39<<mybase_scale,#-200
-	s_decbne_var		B,psvar_byte1,playeronplanet_strat
+	lda	psvar_byte1
+	jsl	tickdownA_l
+	sta	psvar_byte1
+	s_bne	playeronplanet_strat
 ;-----------------------------------------------------------------------
 
 playerExitBaseGo_init
@@ -693,7 +696,10 @@ playerExitBaseGo_strat
 
 
 	s_set_var		B,player_medspeed,#pexitbasespeed
-	s_decbne_var		B,psvar_byte1,playeronplanet_strat
+	lda	psvar_byte1
+	jsl	tickdownA_l
+	sta	psvar_byte1
+	s_bne	playeronplanet_strat
 ;-----------------------------------------------------------------------
 playerExitBaseFollow_init
 	s_set_strat		x,playerExitBaseFollow_strat
@@ -708,7 +714,14 @@ playerExitBaseFollow_strat
 	s_Achase_var		W,viewposy,viewcy,2
 	s_Achase_var		W,viewposz,player_posz,3
 
-	s_varadd_alvar		W,x,viewposz,al_vz
+; Match the player's elapsed displacement while the camera is still fixed.
+	a16
+	lda	al_vz,x
+	jsl	framescaleA_l
+	clc
+	adc	viewposz
+	sta	viewposz
+	a8
 
 
 	s_set_objtobevar	y,viewpt

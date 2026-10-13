@@ -386,7 +386,14 @@ path_istrat
 	getparam	1
 	cmp		al_sbyte3,x
 	s_beq		.zadd2
-	s_inc_alvar	B,x,al_sbyte3
+	s_bcc		.zadd2
+	lda	al_sbyte3,x
+	clc
+	adc.l	visualticks
+	bcc	.waitstore
+	lda	#255
+.waitstore
+	sta	al_sbyte3,x
 	jmp		.move
 
 ;**********

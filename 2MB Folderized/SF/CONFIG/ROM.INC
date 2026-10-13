@@ -37,7 +37,7 @@ msudata		equ	0
 	IFNE	SUPERFX3
 FASTROM		equ 1	; GSU3 requires FastROM ROM map to function
 	ELSEIF
-FASTROM		equ 0
+FASTROM		equ 1
 	ENDC
 
 ; Disables the Super FX clock divider, 
@@ -47,11 +47,9 @@ FASTROM		equ 0
 ; [0 = off, 1 = on]
 fast		equ 1
 
-; Legacy gameplay timing compensation for overclocked GSU-1/2.
-; X/256 ~= 21.4 / 26~28 MHz.
-; Keeps logic timing near the stock 21.4 MHz rate while allowing faster rendering.
-; Lower value = slower enemies (due to higher FPS)
-logicframestep  equ 190
+; NR-RetroWorks 26 MHz GSU-1 target (provisional, chip dependent).
+; round(256 * 21477270 / 26000000) = 211 (211.4685 before rounding).
+logicframestep  equ 211
 
 ; Enable/disable Super FX instruction cache [0 = off, 1 = on]
 ; you should have no good reason to ever switch this off, as it makes performance much, much worse.

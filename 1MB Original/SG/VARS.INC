@@ -10,12 +10,13 @@ contest	equ	0	; contest version
 german	equ	0	; german version
 french	equ	0	; french version
 
-; NR-RetroWorks 26~28 MHz timing, matching ultrastarfox.
+; NR-RetroWorks 26 MHz GSU-1 target (provisional, chip dependent).
 ; Three video frames is the reference movement interval.
 ; Match the fork's GSU-1 configuration: fast GSU, original ROM mapping.
-FASTROM		equ	0
+FASTROM		equ	1
 fast		equ	1
-logicframestep	equ	190
+; round(256 * 21477270 / 26000000) = 211 (211.4685 before rounding).
+logicframestep	equ	211
 barrelrolldelay	equ	8
 
 

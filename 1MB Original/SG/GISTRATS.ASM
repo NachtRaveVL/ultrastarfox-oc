@@ -320,8 +320,10 @@ friendexitbase_Istrat
 	s_set_alvar		B,x,al_sbyte2,#11	; time until left snd
 friendexitbase_strat
 	s_start_strat
-	s_decbne_alvar	B,x,al_sbyte1,.nowt
-	s_set_alvar	B,x,al_sbyte1,#1
+	lda	al_sbyte1,x
+	jsl	tickdownA_l
+	sta	al_sbyte1,x
+	s_bne	.nowt
 
 	s_beqdec_alvar	B,x,al_sbyte2,.left
 	lda	#%10110001
@@ -331,9 +333,19 @@ friendexitbase_strat
 .sndcont
 	sta.l	alx_snd1,x
 
-	s_add_alvar	W,x,al_worldz,#pexitbasespeed
+	a16
+	lda	#pexitbasespeed
+	jsl	framescaleA_l
+	clc
+	adc	al_worldz,x
+	sta	al_worldz,x
+	a8
 	s_clr_alsflag	x,invisible
-	s_dec_lifecnt	x
+	lda	al_count,x
+	jsl	tickdownA_l
+	sta	al_count,x
+	s_bne	.nowt
+	s_remove_obj	x
 .nowt	s_end_strat
 
 ;*******************************************************************************

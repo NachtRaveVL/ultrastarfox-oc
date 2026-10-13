@@ -3198,6 +3198,7 @@ boss7_Istrat
 	s_nodepthcue	y
 
 	s_set_speed	x,#20
+	s_set_alvar	B,x,al_sbyte3,#0	; approach braking remainder
 
 	s_nodepthcue	x
 
@@ -3215,8 +3216,27 @@ boss7a_strat
 
 	s_set_objtobeplayer	y
 	s_jmp_Zdistless		x,y,#170<<boss7_scale,.close	; 170
-	s_jmp_notdelay		2,.nstop
+; One speed decrement per four reference ticks (12 video frames).
+	lda	al_sbyte3,x
+	clc
+	adc	framer
+	a16
+	and	#$ff
+	bcc	.brake
+	ora	#$100
+.brake
+	cmp	#12
+	bcc	.braked
+	sbc	#12
+	pha
+	a8
 	s_speedto		x,#0,1
+	a16
+	pla
+	bra	.brake
+.braked
+	a8
+	sta	al_sbyte3,x
 .nstop
 	s_jmp_alvarEQ		B,x,al_roty,#deg180,.donerot
 	s_add_colanim	x,#1,#4
@@ -3519,9 +3539,8 @@ boss7d_strat
 ;-----------------------------------------------------------------------------
 boss7e_init	; loop 2
 
-	s_set_objtobechild	y,x,#1
-	s_chk_objptr		y,boss7c2_init
-
+; Balance loop 1 once even after the hatch dies; do not repeat the return.
+	s_jmp_alvarNE		B,x,al_sbyte3,#192,boss7c2_init
 	s_set_strat		x,boss7e_strat
 	s_clr_alsflag		x,sflag1
 	s_clr_alsflag		x,sflag2
