@@ -140,7 +140,13 @@ playerEscapeNucleus_cont
 	s_speedto		x,#30,1
 
 	s_set_var		W,pviewvelz,#medpspeed
-	s_add_var		W,pviewposz,pviewvelz
+	a16
+	lda	pviewvelz
+	jsl	framescaleA_l
+	clc
+	adc	pviewposz
+	sta	pviewposz
+	a8
 	s_gen_3dvecs		x,al_roty,al_rotx,al_vel
 
 	s_add_alvar		W,x,al_vz,#medpspeed
@@ -1118,7 +1124,13 @@ playerwashent_Istrat
 	s_set_strat		y,pshipwashent_Istrat
 playerwashent_strat
 	s_start_strat
-	s_add_alvar		W,x,al_worldz,#medpspeed
+	a16
+	lda	#medpspeed
+	jsl	framescaleA_l
+	clc
+	adc	al_worldz,x
+	sta	al_worldz,x
+	a8
 	s_end_strat	
 
 

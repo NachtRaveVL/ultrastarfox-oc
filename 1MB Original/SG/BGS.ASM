@@ -716,6 +716,9 @@ bg_gameover_1	init_bg	mode1
 ;	bg2scr	and
 	palette	2e
 	set_bg
+; The Game Over starfield is in BG1; BG2 has no background resource.
+	lda	#1+16
+	sta	tm
 	info	von,zon,hon,space
 	pstrat	playercred,b,abc
 	hofmode	nograd

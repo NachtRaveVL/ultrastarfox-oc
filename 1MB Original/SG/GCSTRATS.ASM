@@ -1937,6 +1937,11 @@ pshipwashent_Istrat
 	s_set_alsflag	x,shadow
 pshipwashent_strat
 	s_start_strat
+; Turn-table durations and movement share the three-video-frame clock.
+	lda.l	visualticks
+	s_beq	.cont
+	sta	svar_byte2
+.turntick
 	
 	s_copy_alvar2var	B,x,svar_byte1,al_rotx
 	s_scale_var		B,svar_byte1,1
@@ -1954,6 +1959,8 @@ pshipwashent_strat
 	s_jmp_alvarZERO		B,x,al_sbyte1,.straight
 .nnext
 	s_achase_alvar2alvar	B,x,al_rotx,x,al_sbyte3,3
+	dec	svar_byte2
+	s_bne	.turntick
 
 .cont	
 	s_copy_alvar2var	W,x,pviewposx,al_worldx
@@ -1970,8 +1977,14 @@ pshipwashent_strat
 	s_set_alvar		B,x,al_sbyte1,#30
 	trigse			$33
 ;	s_set_speed		x,#20
+	s_brl	.straighttick
+
 .straightstrat
 	s_start_strat
+	lda.l	visualticks
+	s_beq	.cont
+	sta	svar_byte2
+.straighttick
 
 	s_achase_var		W,outdist,#0,3
 
@@ -1982,7 +1995,7 @@ pshipwashent_strat
 	s_achase_alvar		B,x,al_rotx,#0,4
 	s_set_objtobeplayer	y
 	s_copy_alvar2alvar	W,y,al_worldz,x,al_worldz
-	s_decbne_alvar		B,x,al_sbyte1,.cont
+	s_decbne_alvar		B,x,al_sbyte1,.nextstraighttick
 	s_set_strat		y,playerinnucleus_Istrat
 	stz			dozrot
 ;	jsl			vofsoffplease_l
@@ -1992,6 +2005,10 @@ pshipwashent_strat
 	s_add_alvar		W,y,al_worldz,#medpspeed
 	s_remove_obj		x
 	s_brl			.cont	
+.nextstraighttick
+	dec	svar_byte2
+	s_bne	.straighttick
+	s_brl	.cont
 
 
 

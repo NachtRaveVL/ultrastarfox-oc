@@ -35,12 +35,6 @@
 
 transfer_l
 	a8i16
-	php
-	sei		; IRQ increments framec: capture and clear it atomically.
-	lda	framec
-	sta	framer
-	stz	framec
-	plp
 .notfinished
 	lda	trans_flag
 	bne	.notfinished
@@ -111,6 +105,12 @@ transfer_l
 	bne	.skip
 	inc	noirqbit3
 .skip
+	php
+	sei		; Sample at the strategy boundary, after transfer/DMA waits.
+	lda	framec
+	sta	framer
+	stz	framec
+	plp
 	lda	freezestrats
 	bit	#1
 	lbne	stratsfrozen

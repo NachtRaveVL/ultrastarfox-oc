@@ -3,6 +3,7 @@
 	include	stratmac.inc
 	include	stratlib.inc
 	include	bgmacs.inc
+	extern	bgf1pcr	; stored in bank 7 to leave room for timing routines
 	include	blink.ext
 
 	include	mapstructs.inc
@@ -117,7 +118,6 @@ planetdmapos2	dw	100
 	incfile	draw.asm
 	minfo	draw
 	incfile	endseq.asm
-	extern	bgf1pcr	; stored in bank 7 to leave room for timing routines
 	incfile	cont.asm
 	minfo	cont
 	public	MYDEMO_R_P,MYDEMO_R_F
