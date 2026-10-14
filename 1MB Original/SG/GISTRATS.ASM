@@ -358,6 +358,11 @@ pshipIntoLB1_Istrat
 pshipIntoLB1_strat
 	s_start_strat
 
+	lda.l	visualticks
+	s_beq	.move
+	sta	al_sbyte2,x
+.scripttick
+
 
 	s_jmp_ifnotstate	x,0,.nsup
 	s_speedto	x,#minpspeed,1
@@ -433,7 +438,9 @@ pshipIntoLB1_strat
 	s_end_strat
 
 .nend
-
+	dec	al_sbyte2,x
+	s_bne	.scripttick
+.move
 
 	s_gen_3dvecs	x,al_roty,al_rotx,al_vel
 	s_add_vecs2pos	x
@@ -462,6 +469,10 @@ viewIntoLB1_strat
 	s_start_strat
 
 	s_set_objtobevar	y,viewtoobj
+	lda.l	visualticks
+	s_beq	.position
+	sta	al_sbyte1,x
+.offsettick
 	
 
 	s_jmp_ifNOTstate	y,0,.nsup
@@ -493,6 +504,9 @@ viewIntoLB1_strat
 	s_jmp_ifnotstate	y,4,.nend
 	s_remove_obj		x
 .nend
+	dec	al_sbyte1,x
+	s_bne	.offsettick
+.position
 
 	s_copy_pos		x,y
 	s_sub_alvars		W,x,al_worldz,x,al_sword1

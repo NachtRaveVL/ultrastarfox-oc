@@ -3686,6 +3686,36 @@ deadflingboss_istrat
 
 ;-------------------------------------------------------------
 
+; Match the large Fortuna dragon's steering to its elapsed movement ticks.
+	public	pathfaceplayer_l
+	extern	dragonpath_start,dragonpath_end
+pathfaceplayer_l
+	jsl	pathsteerticks_l
+.count	beq	.done
+	pha
+.turn	s_obj2obj_3dangle	x,y,al_roty,al_rotx,2
+	pla
+	dec	a
+	beq	.done
+	pha
+	bra	.turn
+.done	rtl
+
+	public	pathchasebyte_l
+	extern	pathsteerticks_l
+
+pathchasebyte_l
+	jsl	pathsteerticks_l
+	beq	.done
+	pha
+.chase	s_achase_var	B,pathx1,pathy1,3
+	pla
+	dec	a
+	beq	.done
+	pha
+	bra	.chase
+.done	rtl
+
 chicken_istrat
 chick
 	s_start_strat
@@ -3804,8 +3834,8 @@ chick
 .strat2	s_start_strat
 	s_add_anim	x,#8,#10,.stopanim
 .stopanim	a16
-	lda	#600
-	s_jsr	dzdistless
+	lda	#1200
+	s_jsr	.zdistless
 	shorta
 	bcs	.leap
 	s_jmp	.nomove
@@ -3850,8 +3880,8 @@ chick
 	s_or_var	B,armmode,#1
 .strat5	s_start_strat
 	a16
-	lda	#1500
-	s_jsr	dzdistless
+	lda	#2100
+	s_jsr	.zdistless
 	shorta
 	s_bcs	.nxtmode2
 	s_jmp	.nomove
@@ -3859,8 +3889,8 @@ chick
 ;**********
 .waitfor600z	s_start_strat
 	a16
-	lda	#600
-	s_jsr	dzdistless
+	lda	#1200
+	s_jsr	.zdistless
 	shorta
 	s_bcs	.nxtmode2
 	s_jmp		.nomove
@@ -4194,8 +4224,8 @@ chick
 	s_jsr			.needtorotate1
 
 	a16
-	lda	#2500
-	s_jsr	dzdistless
+	lda	#3100
+	s_jsr	.zdistless
 	shorta
 	s_bcc	.notflag
 	s_bra			.nochange
@@ -4203,8 +4233,8 @@ chick
 	s_set_alvar		B,x,al_vel,#-40
 	s_jsr			.needtorotate2
 	a16
-	lda	#600
-	s_jsr	dzdistless
+	lda	#1200
+	s_jsr	.zdistless
 	shorta
 	s_bcc	.nochange
 .notflag	s_not_alsflag		x,sflag3
@@ -4256,6 +4286,23 @@ chick
 	s_clr_alsflag	x,sflag1
 .yohohoandabarrelofrum
 	s_rts
+
+; A boss behind the player has crossed the approach threshold.
+.zdistless
+	sta	x1
+	ldy	playpt
+	lda	al_worldz,x
+	sec
+	sbc.w	al_worldz,y
+	bmi	.zclose
+	cmp	x1
+	bcc	.zclose
+	a8
+	clc
+	rts
+.zclose	a8
+	sec
+	rts
 
 
 .generate

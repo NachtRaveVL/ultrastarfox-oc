@@ -223,6 +223,10 @@ getviewrts
 ;*****************************************************************
 ; cross hair calculation.
 
+; Scripted flight does not display the cross hair.
+	lda	pshipflags
+	and	#psf_noctrl
+	rlbne	.nocrosshair
 
 	php
 	ai16
@@ -313,7 +317,7 @@ getviewrts
 	
 ;*****************************************************************
 
-
+.nocrosshair
 	rtl
 
 

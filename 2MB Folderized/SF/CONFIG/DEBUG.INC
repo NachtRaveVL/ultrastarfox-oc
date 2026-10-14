@@ -58,6 +58,10 @@ lasertype		equ	0
 ; [0 = off, 1 = on]
 godmode			equ	0
 
+; Prevent player damage without disabling collisions
+; [0 = off, 1 = on]
+nodamage		equ	0
+
 ; Infinite Braking
 ; [0 = off 1 = on]
 infbrake		equ	0

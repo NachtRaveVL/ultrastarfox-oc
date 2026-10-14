@@ -1959,12 +1959,17 @@ bossBrob_strat
 
 
 	s_set_objtobeplayer	y
-	s_jmp_Zdistmore		x,y,#3000,bossB_cont3
-
-	s_jmp_alvarINLIMIT	W,x,al_worldx,200,bossBrob2_init
-
-
-	s_brl			bossB_cont3
+	a16
+	lda	al_worldz,x
+	sec
+	sbc.w	al_worldz,y
+	bmi	.passed
+	cmp	#3000
+	a8
+	s_bcs	bossB_cont3
+.passed
+	a8
+	s_brl			bossBrob2_init
 
 ;--------------------------------------------------------------------------
 
@@ -1972,11 +1977,19 @@ bossBrob2_init
 	s_set_strat		x,bossBrob2_strat
 bossBrob2_strat
 	s_start_strat
+; Deceleration and travel share the elapsed reference clock.
+	lda.l	visualticks
+	s_beq	.move
+	sta	svar_byte2
+.braketick
 	s_speedto		x,#0,1,bossBrobsplit_init
 
 	s_achase_alvar		B,x,al_roty,#deg180,3
 	s_achase_alvar		B,x,al_rotx,#0,3
 	
+	dec	svar_byte2
+	s_bne	.braketick
+.move
 	s_brl			bossB_cont3
 
 
@@ -1989,10 +2002,20 @@ bossBrobsplit_strat
 	
 	s_jsr			bossBrobcent_srou
 
+; Finish the centering depth before starting the split attack.
+	s_set_objtobeplayer	y
+	a16
+	lda	al_worldz,x
+	sec
+	sbc.w	al_worldz,y
+	bmi	.nsplit
+	cmp	#3000
+	a8
+	s_bcc	.nsplit
 	s_jsr			bossBrange_srou
 	s_jmp_varless		W,rangexz,#50,bossBrobsplit2_init
-
-
+.nsplit
+	a8
 	s_brl			bossB_cont2
 
 
@@ -2118,9 +2141,23 @@ bossBentsplit_cont
 	s_achase_alvar2alvar	W,x,al_worldx,x,al_sword1,3
 	s_achase_alvar2alvar	W,x,al_worldy,x,al_sword2,3
 	s_set_objtobeplayer	y
-	s_jmp_Zdistless		x,y,#1500,.nzdec
-	s_sub_alvar		W,x,al_worldz,#60
+	a16
+	lda	al_worldz,x
+	sec
+	sbc.w	al_worldz,y
+	bmi	.zbehind
+	cmp	#2000
+	bcc	.nzdec
+	lda	#-60
+	bra	.zmove
+.zbehind
+	lda	#60
+.zmove
+	clc
+	adc	al_worldz,x
+	sta	al_worldz,x
 .nzdec
+	a8
 	s_brl			.end
 .cent
 	s_jsr			bossBrobcent_srou
@@ -2166,9 +2203,20 @@ bossBrobcent_srou
 	s_achase_alvar		W,x,al_worldy,svar_word2,3
 
 	s_set_objtobeplayer	y
-	s_jmp_Zdistmore		x,y,#3000,.nzinc
-	s_add_alvar		W,x,al_worldz,#60
+	a16
+	lda	al_worldz,x
+	sec
+	sbc.w	al_worldz,y
+	bmi	.zbehind
+	cmp	#3000
+	bcs	.nzinc
+.zbehind
+	lda	al_worldz,x
+	clc
+	adc	#60
+	sta	al_worldz,x
 .nzinc
+	a8
 
 	s_rts
 
@@ -2337,7 +2385,13 @@ bossBrobjump2_strat
 
 
 	s_jmp_lower	x,#-80<<bossB_scale,bossbrobland_init
-	s_add_alvar	W,x,al_vy,#20
+	a16
+	lda	#20
+	jsl	framescaleA_l
+	clc
+	adc	al_vy,x
+	sta	al_vy,x
+	a8
 
 	s_add_alvar	B,x,al_roty,#7
 
@@ -2506,7 +2560,13 @@ bossBrobPounce2_strat
 
 	
 	s_jmp_lower	x,#-80<<bossB_scale,.lower
-	s_add_alvar	W,x,al_vy,#4
+	a16
+	lda	#4
+	jsl	framescaleA_l
+	clc
+	adc	al_vy,x
+	sta	al_vy,x
+	a8
 
 
 	s_jmp_notdelay	1,.nment
@@ -2545,7 +2605,13 @@ bossBrobreappear_strat
 .nxrot
 	
 	s_jmp_lower	x,#-80<<bossB_scale,.lower
-	s_add_alvar	W,x,al_vy,#3
+	a16
+	lda	#3
+	jsl	framescaleA_l
+	clc
+	adc	al_vy,x
+	sta	al_vy,x
+	a8
 
 
 	s_jmp_notdelay	1,.nment
@@ -2762,7 +2828,13 @@ bossBrobfarjump2_strat
 	s_add_vecs2pos	x
 
 	s_jmp_lower	x,#-80<<bossB_scale,bossbrobfarland_init
-	s_add_alvar	W,x,al_vy,#8
+	a16
+	lda	#8
+	jsl	framescaleA_l
+	clc
+	adc	al_vy,x
+	sta	al_vy,x
+	a8
 
 	s_achase_alvar	B,x,al_roty,#deg180,3
 	s_achase_alvar	W,x,al_worldx,player_posx,2

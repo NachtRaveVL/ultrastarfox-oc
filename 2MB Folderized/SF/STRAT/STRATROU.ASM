@@ -596,6 +596,67 @@ addalvecs_l
 	a8
 	rtl
 
+; Formation turns use the same elapsed reference ticks as movement.
+	public	zacos_dipturn_l,zacos_loopturn_l
+zacos_dipturn_l
+	lda.l	visualticks
+	beq	.done
+	sta	svar_byte2
+.tick
+	lda	al_rotx,x
+	beq	.done
+	sec
+	sbc	#2
+	sta	al_rotx,x
+	dec	svar_byte2
+	bne	.tick
+.done
+	rtl
+
+; Return C set when a turn tick ran; Z also reports crossing the firing angle.
+zacos_loopturn_l
+	lda.l	visualticks
+	beq	.notick
+	sta	svar_byte2
+	stz	svar_byte1
+.tick
+	lda	al_rotx,x
+	sec
+	sbc	#4
+	sta	al_rotx,x
+	bne	.nzero
+	inc	svar_byte1
+.nzero
+	cmp	#-4
+	beq	.ready
+	dec	svar_byte2
+	bne	.tick
+.ready
+	lda	svar_byte1
+	bne	.fire
+	lda	al_rotx,x
+	sec
+	rtl
+.fire
+	lda	#0
+	sec
+	rtl
+.notick
+	clc
+	rtl
+
+; Carry set when a gameplay wingman hands off to its departure strategy.
+	public	clearpathfriend_l
+	extern	ship2outside_strat
+clearpathfriend_l
+	lda	al_sbyte4,x
+	beq	.done
+	s_set_strat	x,ship2outside_strat
+	sec
+	rtl
+.done	clc
+	rtl
+
 ; a8 -> a8: subtract elapsed three-video-frame ticks, saturating at zero.
 tickdownA_l
 	sec
@@ -2350,6 +2411,17 @@ do_coll_l
 	sta			x1
 .nhard
 .ntun
+
+	IFNE	nodamage
+	cpx	playpt
+	beq	.o2c
+	cpx	pcboxobj_B
+	beq	.o2c
+	cpx	pcboxobj_LW
+	beq	.o2c
+	cpx	pcboxobj_RW
+	beq	.o2c
+	ENDC
 
 	LDA	AL_HP,X	
 	BMI	.o2c

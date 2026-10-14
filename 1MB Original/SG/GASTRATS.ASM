@@ -32,6 +32,7 @@
 ;***************************************************************************
 
 	incpublics	gastrats.ext
+	extern	zacos_dipturn_l,zacos_loopturn_l
 
 	strats_start
 
@@ -310,6 +311,7 @@ ship2_cont
 ship2outside_init
 	s_set_strat		x,ship2outside_strat
 	s_or_var		B,gameflags,#gf_stratdone2
+	public	ship2outside_strat
 ship2outside_strat
 	s_start_strat
 ;	s_jmp_alvarEQ		B,x,al_vz,#-20,.maxsp
@@ -1046,7 +1048,7 @@ zacos_strat
 
 	s_jmp_higher	x,svar_word1,.nup
 	s_jmp_alvarZERO	B,x,al_rotx,zacos2_init
-	s_add_alvar		B,x,al_rotx,#-2
+	jsl	zacos_dipturn_l
 .nup
 
 
@@ -1079,7 +1081,8 @@ zacos3_strat
 	s_start_strat
 
 
-	s_add_alvar		B,x,al_rotx,#-4
+	jsl	zacos_loopturn_l
+	bcc	.nturn
 	s_beq			.fire
 	s_jmp_alvarmi		B,x,al_rotx,.nfire
 	s_jmp_alvarless		B,x,al_rotx,#-deg90,.nfire
@@ -1090,6 +1093,7 @@ zacos3_strat
 .nfire
 	s_jmp_alvarEQ		B,x,al_rotx,#-4,zacos4_init
 
+.nturn
 	s_brl	zacos_cont
 
 ;-------------------------------------------------------------
@@ -2621,11 +2625,21 @@ bomwing_init
 bomwing_strat
 	s_start_strat
 
-	s_beqdec_alvar		B,x,al_sbyte1,bomwing2_init
+	lda	al_sbyte1,x
+	beq	bomwing2_init
+	jsl	tickdownA_l
+	sta	al_sbyte1,x
 	s_gen_vecs		x,al_roty,al_vel
 	s_add_vecs2pos		x
 bomwing_cont
-	s_add_alvar		W,x,al_worldz,#35
+; Keep the forward drift on the same clock as vector movement.
+	a16
+	lda	#35
+	jsl	framescaleA_l
+	clc
+	adc	al_worldz,x
+	sta	al_worldz,x
+	a8
 	s_end_strat
 
 
@@ -2645,8 +2659,16 @@ bomwing2_strat
 	s_set_alvar		W,y,al_ptr,playpt
 .nfire	
 
-	s_add_alvar		B,x,al_roty,#2
-	s_beqdec_alvar		B,x,al_sbyte1,bomwing_init
+; Keep turning and the phase timer on the movement clock.
+	lda.l	visualticks
+	asl	a
+	clc
+	adc	al_roty,x
+	sta	al_roty,x
+	lda	al_sbyte1,x
+	s_beq	bomwing_init
+	jsl	tickdownA_l
+	sta	al_sbyte1,x
 	s_brl			bomwing_cont
 
 bomwingdie_Istrat

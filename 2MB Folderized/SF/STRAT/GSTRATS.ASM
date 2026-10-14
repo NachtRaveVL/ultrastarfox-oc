@@ -2190,6 +2190,17 @@ nukeexp_strat
 	s_jmp_alsflag		y,colldisable,.here
 	s_jmpNOT_alflag		y,frontpl,.here
 
+	IFNE	nodamage
+	cpy	playpt
+	beq	.here
+	cpy	pcboxobj_B
+	beq	.here
+	cpy	pcboxobj_LW
+	beq	.here
+	cpy	pcboxobj_RW
+	beq	.here
+	ENDC
+
 	lda.w			al_hp,y
 	bmi			.here
 	sec

@@ -1623,6 +1623,7 @@
 
 	P_DO		30
 	P_ADD		worldy,-10
+.tomrise_next	LOCAL
 	P_NEXT
 
 	P_SETVEL		60

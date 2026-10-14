@@ -1052,8 +1052,14 @@ pshipDIVEGND_strat
 
 	s_set_objtobealvar	y,x,al_sword1
 	s_jmp_Zdistless		x,y,#outviewdist,.npchg
-	s_set_strat		y,remove_Istrat
-	s_set_strat		x,remove_Istrat
+	a16
+	lda	#remove_Istrat&WM
+	sta	al_stratptr,x
+	sta.w	al_stratptr,y
+	a8
+	lda	#remove_Istrat>>16
+	sta	al_stratptr+2,x
+	sta.w	al_stratptr+2,y
 
 	s_set_objtobeplayer	y
 	s_set_strat		y,playeronplanet_Istrat
@@ -1062,8 +1068,16 @@ pshipDIVEGND_strat
 	plx     
 	
 	s_set_var		B,viewtype,#viewtype_norm
-	s_set_var		W,pviewvelz,#medpspeed
-	s_set_var		W,player_tospeed,#medpspeed
+	a16
+	stz	outvx
+	stz	outvy
+	stz	outvz
+	a8
+	a16
+	lda	#medpspeed
+	sta	pviewvelz
+	sta	player_tospeed
+	a8
 	s_set_var		W,outdist,#outviewdist
 	s_set_var		W,viewdist,#outviewdist
 	s_set_var		B,player_medspeed,#medpspeed
@@ -1081,12 +1095,19 @@ pshipDIVEGND_strat
 	s_gen_3dvecs	x,al_roty,al_rotx,al_vel
 	s_add_vecs2pos	x
 
-	s_beqdec_alvar	B,x,al_sbyte1,.fin2
+; Script turns and movement use the same three-video-frame clock.
+	lda.l	visualticks
+	beq	.done
+	sta	svar_byte2
+.turntick
+	lda	al_sbyte1,x
+	beq	.fin2
+	dec	al_sbyte1,x
 	s_jmp_alvarLESS	B,x,al_sbyte1,#20,.fin
 
 	s_sub_alvar	B,x,al_rotz,#8
 	s_speedto	x,#20,1
-	s_end_strat
+	bra	.nexttick
 
 .fin2
 	s_set_var	B,viewtype,#viewtype_toobj
@@ -1096,6 +1117,10 @@ pshipDIVEGND_strat
 	s_achase_alvar	B,x,al_rotx,#0,5
 	s_speedto	x,#medpspeed,1
 	s_achase_alvar	B,x,al_rotz,#0,4
+.nexttick
+	dec	svar_byte2
+	bne	.turntick
+.done
     	s_end_strat
 
 
@@ -1115,11 +1140,11 @@ viewDIVEGND_Istrat
 viewDIVEGND_strat
 	s_start_strat
 
-	s_set_objtobealvar	y,x,al_sword1
-
-	s_add_alvars		W,x,al_worldz,y,al_vz
+; Follow the ship in Z and advance the camera in Y on the same clock.
 	s_gen_3dvecs		x,al_roty,al_rotx,al_vel
-	s_add_alvars		W,x,al_worldy,x,al_vy
+	s_set_objtobealvar	y,x,al_sword1
+	s_copy_alvar2alvar.w	W,x,al_vz,y,al_vz
+	s_add_vecs2pos		x
 
 	s_copy_alvar2var	W,x,pviewposx,al_worldx
 	s_copy_alvar2var	W,x,pviewposy,al_worldy
@@ -1132,16 +1157,32 @@ viewDIVEGND_strat
 ;	d_print_alvar		W,x,al_worldy,2
 
 
-	s_beqdec_alvar	B,x,al_sbyte1,.fin2
+	lda.l	visualticks
+	bne	.runticks
+	s_end_strat
+.runticks
+	sta	svar_byte2
+.turntick
+	lda	al_sbyte1,x
+	beq	.fin2
+	dec	al_sbyte1,x
 	s_jmp_alvarLESS	B,x,al_sbyte1,#40,.fin
 	s_sub_var	W,outvz,#4*256
-    	s_end_strat
+	bra	.nexttick
 
 .fin2
-	s_sub_alvar	W,x,al_worldz,#3
+	a16
+	dec	al_worldz,x
+	dec	al_worldz,x
+	dec	al_worldz,x
+	a8
 .fin	s_achase_alvar	B,x,al_rotx,#0,5
 	s_speedto	x,#medpspeed,1
 	s_achase_var	W,outvz,#0,3
+.nexttick
+	dec	svar_byte2
+	s_bne	.turntick
+.done
     	s_end_strat
 
 

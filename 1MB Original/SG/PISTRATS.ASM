@@ -122,7 +122,14 @@ playerspaceflyin_Istrat
 	s_playerctrl		off
 	s_playerfly_mode	space
 	s_set_alptrs		x,playerspaceflyin_strat,0,0
-	s_set_pos		x,#0,#-400,#0
+; Reset the map displacement sample with the new fly-in origin.
+	a16
+	stz.w	al_worldx,x
+	stz.w	al_worldz,x
+	stz	lastplayz
+	lda	#-400
+	sta.w	al_worldy,x
+	a8
 	s_or_var		B,pstratflags,#pstf_novdistC
 
 	s_set_var		W,pviewvelz,#medpspeed
@@ -145,7 +152,14 @@ playerinsidespaceflyin_Istrat
 	s_playerctrl		off
 	s_playerfly_mode	space
 	s_set_alptrs		x,playerinsidespaceflyin_strat,playercoll_Istrat,playerdead_Istrat
-	s_set_pos		x,#0,#-400,#0
+; Reset the map displacement sample with the new fly-in origin.
+	a16
+	stz.w	al_worldx,x
+	stz.w	al_worldz,x
+	stz	lastplayz
+	lda	#-400
+	sta.w	al_worldy,x
+	a8
 	s_or_var		B,pstratflags,#pstf_novdistC
 
 	s_copy_alvar2var	W,x,pviewposz,al_worldz
@@ -174,7 +188,14 @@ playerplanetflyin_Istrat
 	s_playerctrl		off
 	s_playerfly_mode	planet
 	s_set_alptrs		x,playerplanetflyin_strat,0,0
-	s_set_pos		x,#0,#-400,#0
+; Reset the map displacement sample with the new fly-in origin.
+	a16
+	stz.w	al_worldx,x
+	stz.w	al_worldz,x
+	stz	lastplayz
+	lda	#-400
+	sta.w	al_worldy,x
+	a8
 	s_or_var		B,pstratflags,#pstf_novdistC
 
 	s_set_var		W,pviewvelz,#medpspeed
@@ -590,7 +611,6 @@ playerDIVEGND_Istrat
 
 	s_set_pos		x,#0,#0,#0
 	s_set_var		W,lastplayZ,#0
-	s_set_var		W,outvx,#-deg90*256
 	s_set_var		W,outvx,#0
 
 
@@ -828,7 +848,13 @@ playerIntoLB1_Istrat
 
 playerIntoLB1_strat
 	s_start_strat
-	s_add_alvar		W,x,al_worldz,#medpspeed
+	a16
+	lda	#medpspeed
+	jsl	framescaleA_l
+	clc
+	adc	al_worldz,x
+	sta	al_worldz,x
+	a8
 
 ;	jsl		calcbgscroll_l
 

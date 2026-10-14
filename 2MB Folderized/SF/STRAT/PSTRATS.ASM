@@ -2619,7 +2619,11 @@ playermove_srou
 
 	s_jmp_varNOTZERO	B,player_rollZvel,.nroll
 
-	s_beqdec_var		B,player_rolldelay,.lragain
+; Keep the double-tap window at the reference real-time duration.
+	lda	player_rolldelay
+	beq	.lragain
+	jsl	tickdownA_l
+	sta	player_rolldelay
 	s_jmp_anyLRkeyup	.nroll
 	s_jmp_anyLRkeydown	.nroll,last
 	s_set_var		B,player_rollZvel,#-32	

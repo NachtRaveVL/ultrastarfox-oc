@@ -210,8 +210,10 @@ amoebastick_strat
 	s_jmp_notdelay		4,.ndam
 	s_set_var		B,screenflashcnt,#screenflashbodyfrms
 	s_set_var		B,screenflashtype,#screenflashbodytype
+	IFEQ	nodamage
 	s_set_objtobevar	y,pcboxobj_B
 	s_beqdec_alvar		B,y,al_hp,.ndam
+	ENDC
 .ndam
 
 

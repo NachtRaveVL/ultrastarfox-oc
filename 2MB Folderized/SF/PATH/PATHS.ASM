@@ -25,6 +25,7 @@
 pathinfo	=	0	; output path information?
 
 	strats_start
+	extern	clearpathfriend_l,pathfaceplayer_l,pathchasebyte_l
 
 	incpublics	EXT\paths.ext
 
@@ -577,7 +578,7 @@ path_istrat
 ;**********
 .faceplayer	SHORTA
 	s_set_objtobeplayer	y
-	s_obj2obj_3dangle	x,y,al_roty,al_rotx,2
+	jsl	pathfaceplayer_l
 	jmp			.add1
 
 ;**********
@@ -684,7 +685,7 @@ path_istrat
 	lda.w		0,y
 	sta		pathx1
 
-	s_achase_var	B,pathx1,pathy1,3
+	jsl	pathchasebyte_l
 
 	lda		pathx1
 	sta.w		0,y
@@ -721,7 +722,10 @@ path_istrat
 	lda.w		0,y
 	sta		pathx1
 
-	s_achase_var	B,pathx1,pathy1,3,.wacbfin
+	lda	pathx1
+	cmp	pathy1
+	beq	.wacbfin
+	jsl	pathchasebyte_l
 
 	lda		pathx1
 	sta.w		0,y
@@ -2068,7 +2072,45 @@ path_istrat
 .next	SHORTA
 	s_mpull		W,x,pathx1
 	a16
+; The flower-launched dragon's DO loops share its elapsed movement clock.
+	lda	al_sword2,x
+	cmp	#path_tomset3
+	bcc	.nextframe
+	cmp	#path_e_tombo
+	bcs	.nextframe
+	lda	pathx1
+	sta	pathx2
+	sec
+	sbc.l	visualticks
+	bcs	.nextstore
+	lda	#0
+.nextstore
+	sta	pathx1
+	lda	al_sword2,x
+	cmp	#ptomset3.tomrise_next-paths
+	bne	.nextcount
+; P_ADD already applied one rise step; apply the remaining elapsed steps.
+	lda	pathx2
+	sec
+	sbc	pathx1
+	dec	a
+	asl	a
+	sta	pathx2
+	asl	a
+	asl	a
+	clc
+	adc	pathx2
+	sta	pathx2
+	lda	al_worldy,x
+	sec
+	sbc	pathx2
+	sta	al_worldy,x
+.nextcount
+	lda	pathx1
+	bra	.nextcheck
+.nextframe
 	dec	pathx1
+.nextcheck
 	a8
 	beq	.endnext
 	s_mpull	W,x,x,al_sword2
@@ -2823,6 +2865,10 @@ path_istrat
 .move
 	s_jmp_alvarZERO		B,x,al_count1,.noaccel
 
+	jsl	pathsteerticks_l
+	beq	.noaccel
+	sta	svar_byte1
+.acceltick
 	lda		al_vel,x
 	cmp		al_count,x
 	bmi		.incit
@@ -2842,6 +2888,8 @@ path_istrat
 	bra		.finish3
 .finish	sta		al_vel,x
 .finish3
+	dec	svar_byte1
+	bne	.acceltick
 
 	s_jmp_alsflag	x,sflag2,.noaccel
 	s_jsr		.genvecs
@@ -2895,6 +2943,12 @@ path_istrat
 	s_set_strat		y,trail_istrat
 .notrail
 .end2
+; Gameplay wingmen leave before the clear-sequence formation arrives.
+	lda	stageclear
+	beq	.noclear
+	jsl	clearpathfriend_l
+	bcs	.end
+.noclear
 	jsr			.triggers
 
 	s_jmp_NOTalsflag	x,motherobj,.notmother
@@ -2986,8 +3040,28 @@ trail_istrat
 ;-*- -*- -*- -*- -*- -*- -*- -*- -*- -*- -*- -*- -*- -*- -*- -*- -*-
 ;---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---
 
+	public	pathsteerticks_l
+pathsteerticks_l
+	a16
+	lda	al_sword2,x
+	cmp	#dragonpath_start
+	bcc	.once
+	cmp	#dragonpath_end
+	bcs	.once
+	a8
+	lda.l	visualticks
+	rtl
+.once	a8
+	lda	#1
+	rtl
+
+
 paths
 	incfile	PATH\pathdata.asm
+	public	dragonpath_start,dragonpath_end
+dragonpath_start	equ	path_tomset3
+dragonpath_end	equ	path_e_ufo
+
 dpaths
 	incfile	PATH\dpathdat.asm
 kpaths
