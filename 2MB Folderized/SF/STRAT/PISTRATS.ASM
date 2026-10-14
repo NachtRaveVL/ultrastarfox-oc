@@ -37,6 +37,7 @@
 	strats_start
 
 	incpublics	EXT\pistrats.ext
+	extern	exitviewlock_l
 
 	IFNE	RUMBLE
 partyboostrumbletab2
@@ -650,6 +651,9 @@ set_playerExitBase_l
 
 	s_set_pos		x,#-27<<mybase_scale,#-39<<mybase_scale,#-200
 
+; Aim once, then hold this viewpoint until the Stage banner starts.
+	jsl	exitviewlock_l
+
 	s_set_alsflag		x,invisible
 
 	s_set_var		B,nomaxbg2Yscroll,#1
@@ -680,6 +684,14 @@ playerExitBaseGo_init
 	s_set_alvar		B,x,al_snd1,#%10110001
 playerExitBaseGo_strat
 	s_start_strat
+
+; do_stage first displays the banner when its counter reaches 47.
+	lda	stagecnt
+	cmp	#48
+	bcs	.viewheld
+	lda	#viewtype_fpos!viewtype_toobj
+	sta	viewtype
+.viewheld
 
 	s_inc_var		B,psvar_byte2
 	s_jmp_varNE		B,psvar_byte2,#12,.nclose

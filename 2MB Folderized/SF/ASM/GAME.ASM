@@ -1,6 +1,25 @@
 
 	incpublics	EXT\game.ext
 
+	public	exitviewlock_l
+
+; Keep the one-time exit camera setup outside the full strategy bank.
+exitviewlock_l
+	php
+	phx
+	phy
+	phb
+	databank	0
+	jsl	getview_l
+	plb
+	i16
+	ply
+	plx
+	plp
+	lda	#viewtype_fpos
+	sta	viewtype
+	rtl
+
 getview_l
 
 	a8
