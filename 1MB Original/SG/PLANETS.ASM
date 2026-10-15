@@ -221,7 +221,7 @@ cestimeron	=	1
 
 	lda	#3
 	sta	lives
-	IFEQ	debuginfo2
+	IFEQ	debuginfo2+planetcheaton
 	stz	credits
 	ELSEIF
 	lda	#1

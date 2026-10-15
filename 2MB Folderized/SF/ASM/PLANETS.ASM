@@ -219,7 +219,7 @@ initplanets_l
 ; Set player's lives
 	lda	#numlives
 	sta	lives
-	IFEQ	debuginfo2
+	IFEQ	debuginfo2+planetcheaton
 	stz	credits
 	ELSEIF
 	lda	#1

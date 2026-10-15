@@ -335,7 +335,6 @@ mshowshadow
 
 
 mshowobject
-	mpush	r11
 
 ;************************************************
 
@@ -352,7 +351,6 @@ mshowobject
 
 ;************************************************
 
-	mpop	r11
 
 ; set objflags
 
@@ -3037,8 +3035,7 @@ mcopypoly
 	lms	r0,[m_objflags]
 	miwt	r1,onscreen
 	and	r1
-;	mlbeq	moff_copypoly
-	mlbra	moff_copypoly
+	mlbeq	moff_copypoly
 
 
 ; on screen version
