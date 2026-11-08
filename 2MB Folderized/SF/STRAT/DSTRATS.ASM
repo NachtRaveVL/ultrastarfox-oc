@@ -5602,9 +5602,9 @@ madtrucker_istrat
 	lda	al_worldz,x
 	sec
 	sbc	#50
-	cmp.w	al_worldz,y
+	cmp.w	pviewposz
 	s_bpl	.move
-	lda.w	al_worldz,y
+	lda.w	pviewposz
 	clc
 	adc	#50
 	sta	al_worldz,x
