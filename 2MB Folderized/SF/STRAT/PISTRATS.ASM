@@ -804,8 +804,15 @@ playerIntoLB1a_Istrat
 	s_set_strat	x,playerIntoLB1a_strat
 playerIntoLB1a_strat
 	s_start_strat
+	lda.l	visualticks
+	beq	.centered
+	sta	svar_byte1
+.centertick
 	s_achase_alvar	W,x,al_worldx,#0,4
 	s_achase_alvar	W,x,al_worldy,viewcy,4
+	dec	svar_byte1
+	bne	.centertick
+.centered
 	s_set_objtobevar	y,mapvar1
 	s_jmp_Zdistless		x,y,#1785,playerintoLB1_Istrat	
 	s_jmp		playeronplanet_strat
@@ -823,16 +830,15 @@ playerIntoLB1_Istrat
 	s_AND_var	B,playerflymode,#~pfm_wobble
 	s_OR_var	B,pstratflags,#pstf_inseq
 
-	jsr			dupplayer
-	s_set_strat		y,pshipIntoLB1_Istrat
-	s_set_vartobeobj	viewtoobj,y
-	s_set_var		B,viewtype,#viewtype_fpos!viewtype_toobj
-
-
 	s_make_obj		#nullshape,.badobj
 	s_set_strat		y,viewIntoLB1_Istrat
 	s_copy_pos		y,x
 .badobj
+
+	jsr			dupplayer
+	s_set_strat		y,pshipIntoLB1_Istrat
+	s_set_vartobeobj	viewtoobj,y
+	s_set_var		B,viewtype,#viewtype_fpos!viewtype_toobj
 
 
 	s_or_var		B,gameflags,#gf_noZremove

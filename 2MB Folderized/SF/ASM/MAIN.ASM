@@ -675,7 +675,7 @@ maketotalscore
 
 	lda	#msg_total&WM ; Load MARIO text data for "TOTAL SCORE" into A
 	ldx	#0 ; Load 0 into X
-	ldy	#-1600 ; Load -1600 into Y
+	ldy	#-2050 ; Load -1600 into Y
 	jsr	makeendobj ; Go to makeendobj subroutine to create text on screen
 	setpath ; Set PATH
 	a16 ; Set A to 16 bit
@@ -708,7 +708,7 @@ maketotalscore
 	ora	#0 ; OR A with 0
 	je	.sub10do ; Jump tp sub10do if equal?
 	ldx	#-300 ; Load -300 into X
-	ldy	#-1400 ; Load -1400 into Y
+	ldy	#-1750 ; Load -1400 into Y
 	jsr	makeendobjn ; Go to makeendobjn subroutine to create text on screen
 	setpath ; Set PATH
 .sub10do	lda	cla2 ; Load target % var into A
@@ -723,22 +723,22 @@ maketotalscore
 	txa ; Transfer X to A
 	ora	#0 ; OR A with 0
 	ldx	#-150 ; Load -150 into X
-	ldy	#-1400 ; Load -1400 into Y
+	ldy	#-1750 ; Load -1400 into Y
 	jsr	makeendobjn ; Go to makeendobjn subroutine to create text on screen
 	setpath ; Set PATH
 .sub1do	lda	cla2 ; Load target % var into A
 	ldx	#000 ; Load 000 into X
-	ldy	#-1400 ; Load -1400 into Y
+	ldy	#-1750 ; Load -1400 into Y
 	jsr	makeendobjn ; Go to makeendobjn subroutine to create text on screen
 	setpath ; Set PATH
 	lda	#0 ; Load 0 into A
 	ldx	#150 ; Load 150 into X
-	ldy	#-1400 ; Load -1400 into Y
+	ldy	#-1750 ; Load -1400 into Y
 	jsr	makeendobjn ; Go to makeendobjn subroutine to create text on screen
 	setpath ; Set PATH
 	lda	#0 ; Load 0 into A
 	ldx	#300 ; Load 300 into X
-	ldy	#-1400 ; Load -1400 into Y
+	ldy	#-1750 ; Load -1400 into Y
 	jsr	makeendobjn ; Go to makeendobjn subroutine to create text on screen
 	setpath ; Set PATH
 
@@ -756,7 +756,7 @@ maketotalscore
 
 	lda	#msg_ave&WM ; Load MARIO text data for "AVERAGE SCORE" into A
 	ldx	#0 ; Load 0 into X
-	ldy	#-850 ; Load -850 into Y
+	ldy	#-1250 ; Load -850 into Y
 	jsr	makeendobj ; Go to makeendobj subroutine to create text on screen
 	setpath ; Set PATH
 	inc	vram3addr ; increment palette addr var
@@ -772,7 +772,7 @@ maketotalscore
 
 	pla ; Pull A from stack
 	ldx	#0 ; Load 0 into X
-	ldy	#-650 ; Load -650 into Y
+	ldy	#-950 ; Load -650 into Y
 	jsr	makeendobj ; Go to makeendobj subroutine to create text on screen
 	setpath ; Set PATH
 	inc	vram3addr ; increment palette addr var
@@ -1421,6 +1421,7 @@ dopause	php
 	lda	joy1h
 	bit	#key_start
 	bne	.wait3
+	stz	framec		; discard time spent paused
 	IFNE	msuvoice
 	LDA #audiostate_norepeat
 	STA msu_control
@@ -1587,6 +1588,17 @@ initscreen_l
 
 ;clear video RAM
 	screen_off
+
+	; Restore the HDMA tables before the next gameplay or ending display.
+	ai16
+	ldx	#0
+.hdmainit	lda.l	hdma_start,x
+	sta.l	xhdma_start,x
+	inx
+	inx
+	cpx	#hdma_end-hdma_start
+	bcc	.hdmainit
+	ai8
 
 	stz	cgadd
 	stz	vmaddl

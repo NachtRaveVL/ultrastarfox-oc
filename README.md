@@ -2,7 +2,7 @@
 
 Star Fox / Starwing source code, modified for ease-of-use and ROMhacking.
 
-> **NR-RetroWorks fork notice:** This repository is a fork of the original [UltraStarFox project](https://github.com/Sunlitspace542/ultrastarfox), maintained by NachtRaveVL for use with the **26–28 MHz Super FX overclocking PCB** sold through [NR-RetroWorks on Etsy](https://www.etsy.com/shop/NachtRaveRetroWerks). This fork is intended for real Star Fox / Starwing cartridge builds using that overclocking hardware, while the upstream repository remains the general-purpose source project.
+> **NR-RetroWorks fork notice:** This repository is a fork of the original [UltraStarFox project](https://github.com/Sunlitspace542/ultrastarfox), maintained by NachtRaveVL for use with the **26+ MHz Super FX overclocking PCB** sold through [NR-RetroWorks on Etsy](https://www.etsy.com/shop/NachtRaveRetroWerks). This fork is intended for real Star Fox / Starwing cartridge builds using that overclocking hardware, while the upstream repository remains the general-purpose source project.
 >
 > Two folders are presented: 2MB Folderized version, which contains the modern folderized & kando-team updated code (meant mostly for emulators with a 126%-128% SuperFX overclock), and 1MB Original version, which contains the more original non-folderized code (meant for actual GSU-1 hardware).
 >
@@ -20,7 +20,7 @@ Go [here](#building) to jump straight to the building instructions.
 - **Repzilon** - Misc. documentation
 - **SegaRetro92** - Texture/Palette Docs, General Graphics Stuff, Author of Several Graphics Tools, German Version GFX/Text Restoration
 - **Sunlit** - Maintainer, Documentation, Toolchain Engineer, Rumble System Programmer ("Flat Rate" Rumble), Rumble Effect Programmer, Tool Author, German Version GFX/Text Restoration, Release Builder Script, MSU-1 programming
-- **Nachtrave** - Optimizations
+- **Nachtrave** - Optimizations, overclocking/elapsed time fixes, FASTROM support
 
 ## Features
 
@@ -29,7 +29,7 @@ Go [here](#building) to jump straight to the building instructions.
 - Intended for real **GSU-1/GSU-2 Super FX hardware overclocked to approximately 26–28 MHz** using the NR-RetroWorks overclocking adapter PCB
 - Super FX clock divider disabled via `fast equ 1`
 - Super FX MS1 high-speed multiply enabled
-- FastROM support (Not recommended) (Do not enable if you are targeting a real cartridge with a real MARIO/GSU-1/GSU-2 IC chip!)
+- FastROM support
 - MSU-1 support
 
 ## Accessory Support

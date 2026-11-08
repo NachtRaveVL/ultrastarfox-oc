@@ -39,6 +39,7 @@
 	incpublics	pcstrats.ext
 
 ;*****************************************************************************
+cleartiming_start
 set_playerClearbridge_l
 	a8i16
 	s_set_objtobeplayer	x
@@ -965,6 +966,7 @@ playerwarp2_strat
 
 
 ;*****************************************************************************
+cleartiming_end
 set_playerOutOfLB1_l
 	a8i16
 	s_set_objtobeplayer	x
@@ -1086,6 +1088,7 @@ shrapfall2_Istrat
 
 
 ;*****************************************************************************
+clearlastplayer_start
 set_playerOutOfLB3_l
 	a8i16
 	s_set_objtobeplayer	x
@@ -1118,6 +1121,8 @@ playerOutofLB3_strat
 
 
 ;*****************************************************************************
+clearlastplayer_end
+clearcolonplayer_start
 set_playerclearcolony_l
 	a8i16
 	s_set_objtobeplayer	x
@@ -1138,7 +1143,12 @@ playerclearcolony_strat
 	s_end_strat	
 
 
+centercolonyx_l
+	s_achase_alvar	W,x,al_worldx,#0,3
+	rtl
+
 ;*****************************************************************************
+clearcolonplayer_end
 set_playerwashent_l
 	a8i16
 	s_set_objtobeplayer	x

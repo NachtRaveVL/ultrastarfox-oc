@@ -1316,7 +1316,7 @@ typea	lda	joy1l
 	sta	contl0
 	lda	joy1h
 	sta	cont0
-	rts
+	brl	getcont0firecheck
 
 typeb	lda	joy1l
 	sta	contl0
@@ -1336,7 +1336,7 @@ typeb	lda	joy1l
 	and	#%00111111
 	ora.l	typey_b,x  ;nmitemp
 	sta	cont0
-	rts
+	brl	getcont0firecheck
 
 typec	lda	joy1l
 	sta	contl0
@@ -1354,7 +1354,7 @@ typec	lda	joy1l
 	and	#%11110011
 	ora	nmitemp
 	sta	cont0
-	rts
+	brl	getcont0firecheck
 
 typed	lda	joy1l
 	sta	contl0
@@ -1389,7 +1389,12 @@ typed	lda	joy1l
 	pla
 	ora	nmitemp
 	sta	cont0
-	rts
+getcont0firecheck
+	and	#key_y
+	bne	.held
+	lda	#3
+	sta	firecnt
+.held	rts
 
 typey_b	db	%00000000,%10000000,%01000000,%11000000
 typeu_d	db	%00000000,%00001000,%00000100,%00001100

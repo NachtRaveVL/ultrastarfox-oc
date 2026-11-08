@@ -1,3 +1,6 @@
+	global	clearcolonplayer_start,clearcolonplayer_end
+	global	cleartiming_start,cleartiming_end
+	global	clearlastplayer_start,clearlastplayer_end
 	global	 PLAYERWARP_ISTRAT	; pc
 	global	 SET_PLAYERCLEARDEMO_L
 	global	 SET_PLAYERWARP_L
@@ -20,8 +23,10 @@
 	global   playeroutofLB3_Istrat
 	global	 shrapnel_srou_l
 	global   playerclearcolony_Istrat
+	global	centercolonyx_l
 	global   playerwashent_Istrat
 	global	 SET_PLAYERCLEARSHIP2_L
 	global	 PLAYERCLEARSHIP2_Istrat
 	global	set_playertoCslow_l
 
+

@@ -132,7 +132,14 @@ amoeba_Istrat
 amoeba_strat
 	s_start_strat
 amoeba_cont
-	s_add_alvar	W,x,al_worldz,#-60
+; Relative approach must advance with elapsed time, like player translation.
+	a16
+	lda	#-60
+	jsl	framescaleA_l
+	clc
+	adc	al_worldz,x
+	sta	al_worldz,x
+	a8
 	s_add_playerZ	x
 	s_end_strat
 
@@ -1673,6 +1680,7 @@ spacebar3_strat
 colony0_Istrat
 	s_start_strat	
 	s_set_strat	x,colony0_strat
+	s_set_alvar	W,x,al_sword1,pviewposz
 	s_set_aldata	x,#10,#10
 	s_and_var		B,gameflags,#~gf_stratdone1
 	s_set_colltype		x,enemy1
@@ -1705,9 +1713,17 @@ colony0_strat
 ;------------------------------------------------
 
 	s_playerctrl		off
+	lda.l	visualticks
+	beq		.centered
+	sta		al_sbyte1,x
+.centertick
 	s_achase_alvar		W,y,al_worldx,#0,4
 	s_achase_alvar		W,y,al_worldy,viewcy,4
+	dec		al_sbyte1,x
+	bne		.centertick
+.centered
 	s_jmp_objinfront	x,y,.nthere
+	s_jmp_outxydistrng	x,y,#0,#(16<<2),.nthere
 	s_or_var		B,gameflags,#gf_stratdone1
 	s_set_alsflag		x,sflag1
 	s_brl			.nthere
@@ -1727,8 +1743,20 @@ colony0_strat
 
 
 colony0_cont
-	s_add_alvar	W,x,al_worldz,#-20	
-	s_add_playerZ	x
+	a16
+	lda	#20
+	jsl	framescaleA_l
+	sta	svar_word1
+	lda	pviewposz
+	sec
+	sbc	al_sword1,x
+	sta	al_sword1,x
+	sec
+	sbc	svar_word1
+	clc
+	adc	al_worldz,x
+	sta	al_worldz,x
+	a8
 	s_end_strat
 
 
@@ -1736,6 +1764,7 @@ colony0_cont
 colony1_Istrat
 	s_start_strat	
 	s_set_strat	x,colony1_strat
+	s_set_alvar	W,x,al_sword1,pviewposz
 	s_set_alsflag	x,colldisable
 	s_set_altype	x,gnd
 colony1_strat
@@ -2430,11 +2459,20 @@ aircar4_strat
 	s_jmp_Zdistmore	x,y,#400,.nspeedup
 	s_init_colanim	x,#0
 	s_set_alsflag	x,sflag1
-.speedup	s_speedto	x,#medpspeed+15,5,.go
-	s_brl		.nspeedup
-.go	s_add_alvar	B,x,al_roty,#1	
-	s_add_alvar	B,x,al_rotz,#1	
+.speedup
+	lda.l	visualticks
+	beq	.nspeedup
+	sta	svar_byte2
+.speedtick
+	s_speedto	x,#medpspeed+15,5,.go
+	s_brl	.nexttick
+.go	s_add_alvar	B,x,al_roty,#1
+	s_add_alvar	B,x,al_rotz,#1
 	s_dec_lifecnt	x
+	s_jmp_alvarZERO	B,x,al_count,.nspeedup
+.nexttick
+	dec	svar_byte2
+	bne	.speedtick
 .nspeedup
 	s_gen_3dvecs	x,al_roty,al_rotx,al_vel
 	s_add_vecs2pos	x

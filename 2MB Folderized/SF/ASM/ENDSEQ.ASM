@@ -80,11 +80,7 @@ q_start	MACRO
 
 q_rept_strat MACRO
 	lda	\1
-.lp\@	pha
-	jsr	dostratlist
-	pla
-	dec	a
-	bne	.lp\@
+	jsr	reptstrats
 	ENDM
 
 q_set_han	MACRO
@@ -228,6 +224,9 @@ q_set_viewhgt MACRO
 
 endseq_l	php
 
+	a8
+.waitold	lda	trans_flag
+	bne	.waitold
 	jsl	initgame3d_l
 	jsl	setcharmapfox_l
 
@@ -368,6 +367,8 @@ endseq_l	php
 	jsr	handler
 	jsr	endtrans
 	a8
+	lda	#hdmaf_inidisp+hdmaf_win
+	sta	hdmaen
 	lda	stayblack
 	bne	.black
 	lda	#14
@@ -397,13 +398,6 @@ end_endseq2	plp
 endtrans_l	jsr	endtrans
 	rtl
 endtrans	a8i16
-	php
-	sei
-	lda	framec
-	sta	framer
-	stz	framec
-	plp
-	jsl	visualclock_l
 .notfinished
 	lda	trans_flag
 	cmp	#32
@@ -419,6 +413,14 @@ endtrans	a8i16
 	bne	.skip2
 	inc	noirqbit3
 .skip2
+
+	php
+	sei
+	lda	framec
+	sta	framer
+	stz	framec
+	plp
+	jsl	visualclock_l
 
 	jsr	dostratlist
 	jsl	getview_l
@@ -453,6 +455,39 @@ endtrans	a8i16
 	beq	.nd3
 	inc	noirqbit3
 .nd3
+	rts
+
+
+; Pre-position credit actors with reference steps, not the previous render time.
+reptstrats
+	phx
+	tax
+	a8
+	lda	framer
+	pha
+	a16
+	lda.l	visualticks
+	pha
+	a8
+	lda	#3
+	sta	framer
+	a16
+	txa
+.lp	pha
+; Each hidden positioning step must advance the shared reference clock.
+	jsl	visualclock_l
+	jsr	dostratlist
+	pla
+	dec	a
+	bne	.lp
+	pla
+	sta.l	visualticks
+	a8
+	pla
+	sta	framer
+	a16
+	plx
+	lda	#0
 	rts
 
 
@@ -575,11 +610,17 @@ getaboss	php
 	stz	pviewposx
 	stz	pviewposy
 	stz	pviewposz
+	stz	viewyoff
 
 	a8i16
 	ldx	allst
 	s_make_obj	#nullshape,.kk
 .kk	sty	playpt
+	sty	viewtoobj	; the previous ending target was freed with the old list
+	sty	internalPLAYPT
+	sty	pcboxobj_B
+	sty	pcboxobj_LW
+	sty	pcboxobj_RW
 	s_set_strat	y,playercred_Istrat
 	s_make_obj	#nullshape,.kk2
 .kk2	sty	viewpt
@@ -615,7 +656,6 @@ getaboss	php
 	stz	outvx
 	stz	outvy
 	stz	outvz
-	stz	outdist
 
 	a8i16
 	jsl	initgame_strats_l
@@ -628,8 +668,6 @@ getaboss	php
 	a8
 	lda	#4
 	sta	stayblack
-	lda	#hdmaf_inidisp+hdmaf_win
-	sta	hdmaen
 	waitdma	150
 	waitdma	140
 	lda	#32
@@ -879,7 +917,6 @@ boss16_ihan	q_start
 
 boss21_ihan	q_start
 	q_set_bg		a
-	q_set_bg		a
 	q_set_han		boss11_han
 	q_set_cnt		#180
 	q_set_viewdist		#1500
@@ -1016,7 +1053,6 @@ boss35_ihan	q_start
 	q_set_viewhgt		#-300
 	q_init_text		boss35txt
 	q_set_text		boss35txt2
-	q_rept_strat		#200
 	q_end
 
 boss36_ihan	q_start

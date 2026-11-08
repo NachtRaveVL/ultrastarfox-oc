@@ -1,3 +1,6 @@
+	global	clearescape_start
+	global	tallytextsync_l
+	global	clearsteps_l
 	GLOBAL	floatCLship_l
 	GLOBAL	floatCLship2_l
   	GLOBAL	PSHIPDIVEGND_ISTRAT
@@ -47,8 +50,10 @@
 	global   viewoutofLB1_Istrat
 
 	global   pshipoutofLB3_Istrat
+	global	pshipoutofLB3_strat
 	global   viewoutofLB3_Istrat
 	global   shipoutofLB3_Istrat
 	global	pshipcolony_Istrat
 	global	pshipwashent_Istrat
 	global	ship0cdown_Istrat
+

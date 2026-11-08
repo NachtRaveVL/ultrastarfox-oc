@@ -35,6 +35,7 @@
 	longi
 
 	INCPUBLICS	gstrats.ext
+	extern	bg_1_7b,bglists
 
 	strats_start
 
@@ -3222,6 +3223,20 @@ calcbgscroll_l
 
 	clc
 	adc		bg2Yscroll
+; The escape background starts at row 208; table bias and viewport add 32.
+	pha
+	lda	currentbg
+	and	#$ff
+	cmp	#bg_1_7b-bglists
+	bne	.notexitbg
+	pla
+	cmp	#208-32
+	bcs	.bgminok
+	lda	#208-32
+	bra	.bgminok
+.notexitbg
+	pla
+.bgminok
 	and		#511
 	sta		bg2scroll
 	stz		lastrot

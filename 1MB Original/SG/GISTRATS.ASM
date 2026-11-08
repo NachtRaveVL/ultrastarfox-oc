@@ -353,13 +353,14 @@ pshipIntoLB1_Istrat
 	s_start_strat
 	s_set_strat	x,pshipIntoLB1_strat
 	s_set_alsflag	x,colldisable
+	s_set_alvar	B,x,al_roty,#0
 	s_set_speed	x,#medpspeed
 	s_set_alvar	B,x,al_sbyte1,#deg90/2
 pshipIntoLB1_strat
 	s_start_strat
 
 	lda.l	visualticks
-	s_beq	.move
+	s_beq	.nomove
 	sta	al_sbyte2,x
 .scripttick
 
@@ -438,13 +439,11 @@ pshipIntoLB1_strat
 	s_end_strat
 
 .nend
+	s_gen_3dvecs	x,al_roty,al_rotx,al_vel
+	jsl	addvecs_l
 	dec	al_sbyte2,x
 	s_bne	.scripttick
-.move
-
-	s_gen_3dvecs	x,al_roty,al_rotx,al_vel
-	s_add_vecs2pos	x
-
+.nomove
 	s_end_strat
 
 
@@ -467,6 +466,10 @@ viewIntoLB1_Istrat
 
 viewIntoLB1_strat
 	s_start_strat
+	s_jmp_varNE	B,viewtype,#viewtype_norm,.active
+	s_remove_obj	x
+	s_end_strat
+.active
 
 	s_set_objtobevar	y,viewtoobj
 	lda.l	visualticks
@@ -503,6 +506,7 @@ viewIntoLB1_strat
 
 	s_jmp_ifnotstate	y,4,.nend
 	s_remove_obj		x
+	s_end_strat
 .nend
 	dec	al_sbyte1,x
 	s_bne	.offsettick

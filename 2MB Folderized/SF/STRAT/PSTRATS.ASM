@@ -589,6 +589,14 @@ playercred_Istrat
 	s_set_var		W,pviewposx,#0
 	s_set_var		W,pviewposy,#0
 	s_set_var		W,pviewposz,#0
+	a16
+	stz	viewfloatX
+	stz	viewfloatY
+	stz	pviewposZoff
+	a8
+	stz	viewshakeX
+	stz	viewshakeY
+	stz	viewshakeZ
 	
 	s_set_var		B,viewtype,#viewtype_norm
 
@@ -2888,8 +2896,11 @@ playerfire_srou
 
 ;------------------------------------------------------------
 
-	s_decbne_var		B,specialdelay,.npfa
-	s_set_var		B,specialdelay,#1
+; Bomb recovery uses elapsed reference ticks, including slow render frames.
+	lda	specialdelay
+	jsl	tickdownA_l
+	sta	specialdelay
+	bne	.npfa
 
 	IFNE	mouseon
 	lda	mousemode
@@ -2905,18 +2916,21 @@ playerfire_srou
 	s_jmp_lastkeydown	a,.npfa
 .bombtime
 	IFEQ	INFBOMBS
-	s_set_var		B,specialdelay,#specialdelayfrms
-	s_beqdec_var		W,specwepcnt,.npfa
-	ENDC
-
-	trigse			$31
-	IFNE	RUMBLE
-	s_queue_rumble	2,2,5
+	s_jmp_varZERO		W,specwepcnt,.npfa
 	ENDC
 
 	s_weapon_pos		#0,#0,#80>>weapon_scale
 	s_weapon_rot		#0,#0
+; Commit ammunition and recovery only after the bomb object exists.
 	s_fire_weapon		x,NUKE,.npfa
+	IFEQ	INFBOMBS
+	s_dec_var		W,specwepcnt
+	s_set_var		B,specialdelay,#specialdelayfrms
+	ENDC
+	trigse			$31
+	IFNE	RUMBLE
+	s_queue_rumble	2,2,5
+	ENDC
 	s_set_alvar		B,y,al_sbyte4,#2
 
 .npfa

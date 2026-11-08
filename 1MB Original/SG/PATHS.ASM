@@ -27,7 +27,7 @@ pathinfo	=	0	; output path information?
 	strats_start
 
 	incpublics	paths.ext
-	extern	clearpathfriend_l,pathfaceplayer_l,pathchasebyte_l
+	extern	clearpathfriend_l,pathfaceplayer_l,pathchasebyte_l,pshipoutofLB3_strat
 
 ; alvars used:
 ; al_sbyte1 =  used for child macros
@@ -58,6 +58,7 @@ pathdha_istrat
 	bra	path_istrat
 patht_istrat
 	s_start_strat
+	s_copy_var2alvar	W,x,al_sword1,viewposz
 	s_set_alsflag	x,colldisable
 	s_set_alsflag	x,textobj
 	s_set_aldata	x,#10,#hardAP
@@ -70,6 +71,7 @@ path_istrat
 	stz		pathptr
 	stz		pathptr+1
 .strat
+path_tick_strat	equ	*
 	s_start_strat
 
 	ldy	al_sword2,x
@@ -2891,6 +2893,19 @@ path_istrat
 .norelvel
 
 	s_jmp_NOTalsflag	x,sflag1,.noplayerz
+; The final tally is anchored after the completed camera update.
+	s_jmp_NOTalsflag	x,textobj,.playerz
+	ldy	viewtoobj
+	beq	.playerz
+	lda.w	al_stratptr+2,y
+	cmp	#pshipoutofLB3_strat>>16
+	bne	.playerz
+	a16
+	lda.w	al_stratptr,y
+	cmp	#pshipoutofLB3_strat&WM
+	a8
+	beq	.noplayerz
+.playerz
 	s_add_playerz	x
 .noplayerz
 	s_jmp_NOTalsflag	x,sflag2,.dontalwaysgenvecs
@@ -2960,7 +2975,9 @@ trail_istrat
 	s_set_aldata	x,#10,#hardAP
 	s_set_strat		x,.strat
 	s_set_alvar		B,x,al_sbyte1,#5
-.strat	s_start_strat
+.strat
+trail_tick_strat	equ	*
+	s_start_strat
 	lda	al_sbyte1,x
 	and	#1
 	bne	.nodo

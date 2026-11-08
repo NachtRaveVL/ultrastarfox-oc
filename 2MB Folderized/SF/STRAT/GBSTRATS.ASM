@@ -648,7 +648,16 @@ boss2_strat
 	s_add_alvar		W,x,al_worldz,#30
 	s_set_objtobeplayer	y
 	s_set_alvar		B,x,al_sbyte4,#25
-	s_jmp_Zdistmore		x,y,#1100,nextstate
+; Finish returning ahead of the player before resuming the attack.
+	a16
+	lda	al_worldz,x
+	sec
+	sbc.w	al_worldz,y
+	bmi	.returning
+	cmp	#1100
+.returning
+	a8
+	rlbpl	nextstate
 
 .ns3
 ;---------------------------------------------------------------

@@ -42,9 +42,11 @@ cl_warp_btime	equ	430
 
 	strats_start
 
+	extern	boss2_Istrat,boss2exp_Istrat
 	incpublics	gcstrats.ext	
 
 ;*****************************************************************************
+clearships_start
 flyinleft_srou
 	s_jmp_alsflag		x,sflag1,.slow
 	s_jmp_alvarLESS		W,x,al_worldx,#-30,.nright
@@ -142,21 +144,14 @@ clshipWARP_cont
 	s_beqdec_alvar		W,x,al_sword1,clshipboost_Istrat
 	s_set_objtobeplayer	y
 
-	s_copy_alvar2var.w	W,y,svar_word1,al_worldz
-	s_add_var		W,svar_word1,svar_word2
-	s_achase_alvar		W,x,al_worldz,svar_word1,4
+	jsr	clearfollow4
 
-	s_copy_alvar2var.w	W,y,svar_word1,al_worldy
-	s_add_var		W,svar_word1,svar_word3
-	s_achase_alvar		W,x,al_worldy,svar_word1,4
 
 ;	s_achase_alvar2alvar	B,x,al_rotz,y,al_rotz,5
 	s_achase_alvar		B,x,al_rotz,#0,5
 
 	s_achase_alvar2alvar	B,x,al_rotx,y,al_rotx,5
 
-	s_add_playerZ		x	
-	s_add_alvar		W,x,al_worldz,psvar_word2
 	s_end_strat
 
 
@@ -207,13 +202,8 @@ clshipGND_cont
 	s_beqdec_alvar		W,x,al_sword1,clshipboost_Istrat
 	s_set_objtobeplayer	y
 
-	s_copy_alvar2var.w	W,y,svar_word1,al_worldz
-	s_add_var		W,svar_word1,svar_word2
-	s_achase_alvar		W,x,al_worldz,svar_word1,3
+	jsr	clearfollow2
 
-	s_copy_alvar2var.w	W,y,svar_word1,al_worldy
-	s_add_var		W,svar_word1,svar_word3
-	s_achase_alvar		W,x,al_worldy,svar_word1,2
 
 	s_jmp_notdelay		1,.zd
 	s_achase_alvar2alvar	B,x,al_rotz,y,al_rotz,5
@@ -223,7 +213,6 @@ clshipGND_cont
 	s_achase_alvar2alvar	B,x,al_rotx,y,al_rotx,5
 .nxc
 
-	s_add_playerZ		x	
 	s_end_strat
 
 
@@ -407,13 +396,13 @@ clship_cont
 
 
 
-	s_copy_alvar2var.w	W,y,svar_word1,al_worldz
-	s_sub_var		W,svar_word1,svar_word2
-	s_achase_alvar		W,x,al_worldz,svar_word1,4
+	a16
+	lda	svar_word2
+	nega
+	sta	svar_word2
+	a8
+	jsr	clearfollow4
 
-	s_copy_alvar2var.w	W,y,svar_word1,al_worldy
-	s_add_var		W,svar_word1,svar_word3
-	s_achase_alvar		W,x,al_worldy,svar_word1,4
 
 	s_jmp_notdelay		1,.zd
 	s_achase_alvar2alvar	B,x,al_rotz,y,al_rotz,4
@@ -422,8 +411,9 @@ clship_cont
 	s_jmp_notdelay		2,.nxc
 	s_achase_alvar2alvar	B,x,al_rotx,y,al_rotx,5
 .nxc
+	s_end_strat
 .nplayerchase
-	s_add_playerZ		x	
+	s_add_playerZ		x
 	s_end_strat
 
 
@@ -502,13 +492,8 @@ clshipTURN_cont
 
 	s_set_objtobeplayer	y
 
-	s_copy_alvar2var.w	W,y,svar_word1,al_worldz
-	s_add_var		W,svar_word1,svar_word2
-	s_achase_alvar		W,x,al_worldz,svar_word1,4
+	jsr	clearfollow5
 
-	s_copy_alvar2var.w	W,y,svar_word1,al_worldy
-	s_add_var		W,svar_word1,svar_word3
-	s_achase_alvar		W,x,al_worldy,svar_word1,5
 
 	s_achase_alvar		B,x,al_rotz,#0,5
 ;	s_achase_alvar2alvar	B,x,al_rotz,y,al_rotz,5
@@ -516,7 +501,6 @@ clshipTURN_cont
 
 	s_achase_alvar2alvar	B,x,al_rotx,y,al_rotx,5
 
-	s_add_playerZ		x	
 	s_end_strat
 
 
@@ -616,13 +600,8 @@ clshipBRIDGE_cont
 	s_beqdec_alvar		W,x,al_sword1,clshipbridgeboost_Istrat
 	s_set_objtobeplayer	y
 
-	s_copy_alvar2var.w	W,y,svar_word1,al_worldz
-	s_add_var		W,svar_word1,svar_word2
-	s_achase_alvar		W,x,al_worldz,svar_word1,4
+	jsr	clearfollow5
 
-	s_copy_alvar2var.w	W,y,svar_word1,al_worldy
-	s_add_var		W,svar_word1,svar_word3
-	s_achase_alvar		W,x,al_worldy,svar_word1,5
 
 
 	s_achase_alvar2alvar	B,x,al_rotx,y,al_rotx,5
@@ -632,8 +611,6 @@ clshipBRIDGE_cont
 	s_achase_alvar2alvar	B,x,al_roty,y,al_roty,4
 .ny
 
-	s_add_playerZ		x	
-	s_add_alvar		W,x,al_worldz,psvar_word2
 	s_end_strat
 
 
@@ -775,18 +752,16 @@ clshipDIVE_cont
 
 	s_set_objtobeplayer	y
 
-	s_copy_alvar2var.w	W,y,svar_word1,al_worldz
-	s_add_var		W,svar_word1,svar_word2
-	s_achase_alvar		W,x,al_worldz,svar_word1,4
+	jsr	clearfollow4
 
-	s_copy_alvar2var.w	W,y,svar_word1,al_worldy
-	s_add_var		W,svar_word1,svar_word3
-	s_achase_alvar		W,x,al_worldy,svar_word1,4
 
 ;	s_achase_alvar2alvar	B,x,al_rotz,y,al_rotz,5
 	s_achase_alvar		B,x,al_rotz,#0,5
 
 	s_achase_alvar2alvar	B,x,al_rotx,y,al_rotx,5
+
+	s_beqdec_alvar		W,x,al_sword1,clshipDIVEboost_Istrat
+	s_end_strat
 
 clshipDIVE_cont2
 	s_beqdec_alvar		W,x,al_sword1,clshipDIVEboost_Istrat
@@ -865,13 +840,8 @@ clshipCHASE_cont
 	s_beqdec_alvar		W,x,al_sword1,clshipboost_Istrat
 	s_set_objtobeplayer	y
 
-	s_copy_alvar2var.w	W,y,svar_word1,al_worldz
-	s_add_var		W,svar_word1,svar_word2
-	s_achase_alvar		W,x,al_worldz,svar_word1,4
+	jsr	clearfollow5
 
-	s_copy_alvar2var.w	W,y,svar_word1,al_worldy
-	s_add_var		W,svar_word1,svar_word3
-	s_achase_alvar		W,x,al_worldy,svar_word1,5
 
 
 	s_achase_alvar2alvar	B,x,al_rotx,y,al_rotx,5
@@ -881,8 +851,6 @@ clshipCHASE_cont
 	s_achase_alvar2alvar	B,x,al_roty,y,al_roty,4
 .ny
 
-	s_add_playerZ		x	
-	s_add_alvar		W,x,al_worldz,psvar_word2
 	s_end_strat
 
 
@@ -979,13 +947,8 @@ clshipUNDER_cont
 	s_beqdec_alvar		W,x,al_sword1,clshipUNDERboost_Istrat
 	s_set_objtobeplayer	y
 
-	s_copy_alvar2var.w	W,y,svar_word1,al_worldz
-	s_add_var		W,svar_word1,svar_word2
-	s_achase_alvar		W,x,al_worldz,svar_word1,4
+	jsr	clearfollow5
 
-	s_copy_alvar2var.w	W,y,svar_word1,al_worldy
-	s_add_var		W,svar_word1,svar_word3
-	s_achase_alvar		W,x,al_worldy,svar_word1,5
 
 
 	s_achase_alvar2alvar	B,x,al_rotx,y,al_rotx,5
@@ -995,8 +958,6 @@ clshipUNDER_cont
 	s_achase_alvar2alvar	B,x,al_roty,y,al_roty,4
 .ny
 
-	s_add_playerZ		x	
-	s_add_alvar		W,x,al_worldz,psvar_word2
 	s_end_strat
 
 
@@ -1033,6 +994,295 @@ clshipUNDERboost_strat
 
 
 ;*****************************************************************************
+; Formation correction uses the leader's actual displacement before chasing.
+clearfollow2
+	jsr	clearfollow
+	jsl	sr16_achase_alvar2
+	bra	clearfollow_end
+clearfollow4
+	jsr	clearfollow
+	jsl	sr16_achase_alvar4
+	bra	clearfollow_end
+clearfollow5
+	jsr	clearfollow
+	jsl	sr16_achase_alvar5
+clearfollow_end
+	sta	al_worldy,x
+	a8
+	rts
+clearfollow
+	a16
+	lda.w	al_worldz,y
+	sec
+	sbc	player_posz
+	clc
+	adc	al_worldz,x
+	sta	tpx
+	lda.w	al_worldz,y
+	clc
+	adc	svar_word2
+	jsl	sr16_achase_alvar4
+	sta	al_worldz,x
+	lda.w	al_worldy,y
+	sec
+	sbc	player_posy
+	clc
+	adc	al_worldy,x
+	sta	tpx
+	lda.w	al_worldy,y
+	clc
+	adc	svar_word3
+	rts
+
+; Consume elapsed reference steps in script order, including state changes.
+; Mission clears, scripted flights and selected actors use this clock.
+clearsteps_l
+	a8
+	lda	al_stratptr+2,x
+	cmp	#cleartiming_start>>16
+	lbeq	.player
+	cmp	#path_istrat>>16
+	lbeq	.flyer
+	cmp	#bossseamon_Istrat>>16
+	lbeq	.seamon
+	cmp	#boss2_Istrat>>16
+	lbeq	.macbeth
+	cmp	#clearships_start>>16
+	lbne	.no
+	a16
+	lda	al_stratptr,x
+	cmp	#clearships_start&WM
+	lbcc	.no16
+	cmp	#clearships_end&WM
+	lbcc	.yes
+	cmp	#clearescape_start&WM
+	lbcc	.no16
+	cmp	#clearlast_end&WM
+	lbcc	.yes
+	cmp	#pshipcolony_Istrat&WM
+	lbcc	.no16
+	cmp	#pshipwashent_Istrat&WM
+	lbcc	.yes
+	brl	.no16
+.macbeth
+	a16
+	lda	al_stratptr,x
+	cmp	#boss2_Istrat&WM
+	lbcc	.no16
+	cmp	#boss2exp_Istrat&WM
+	lbcc	.yes
+	brl	.no16
+.seamon
+	a16
+	lda	al_stratptr,x
+	cmp	#spacebar_Istrat&WM
+	lbcc	.no16
+	cmp	#spacebarwalker_Istrat&WM
+	lbcc	.yes
+	cmp	#bossseamon_Istrat&WM
+	lbcc	.no16
+	cmp	#bossseamonexp_Istrat&WM
+	lbcc	.yes
+	brl	.no16
+.player
+	a16
+	lda	al_stratptr,x
+	cmp	#cleartiming_start&WM
+	lbcc	.no16
+	cmp	#cleartiming_end&WM
+	lbcc	.yes
+	cmp	#clearlastplayer_start&WM
+	lbcc	.no16
+	cmp	#clearlastplayer_end&WM
+	lbcc	.yes
+	cmp	#clearcolonplayer_start&WM
+	lbcc	.no16
+	cmp	#clearcolonplayer_end&WM
+	lbcc	.yes
+	brl	.no16
+.flyer
+	a16
+	lda	al_stratptr,x
+	cmp	#path_istrat&WM
+	beq	.flyermap
+	cmp	#path_tick_strat&WM
+	bne	.no16
+.flyermap
+	lda	al_sword2,x
+	cmp	#path_egu1
+	bcc	.no16
+	cmp	#path_egu5
+	bcc	.yes
+	cmp	#path_e_heli
+	bcc	.no16
+	cmp	#path_e_walk_1
+	bcc	.yes
+; Falling blocks must finish each warning and fall step on the same clock.
+	cmp	#path_e_dosun
+	bcc	.no16
+	cmp	#path_e_shieldr
+	bcc	.yes
+.no16
+	a8
+.no
+	clc
+	rtl
+.yes
+	a8
+	lda.l	visualticks
+	bne	.run
+; Do not present a new ship before its first reference tick initializes it.
+	test_alcollflags	x,acf_firstframe
+	beq	.waittick
+	s_set_alsflag	x,invisible
+.waittick
+	sec
+	rtl
+.run
+	test_alcollflags	x,acf_firstframe
+	beq	.initialized
+	s_clr_alsflag	x,invisible
+	s_clr_alcollflag	x,firstframe
+.initialized
+	phy
+	a16
+	lda	player_posx
+	pha
+	lda	player_posy
+	pha
+	lda	player_posz
+	pha
+	lda	logicframe
+	pha
+	lda.l	visualticks
+	pha
+	lda.l	visualframe
+	sec
+	sbc.l	visualticks
+	sta	logicframe
+	a8
+	lda	framer
+	pha
+	lda.l	visualticks
+	pha
+	lda	#3
+	sta	framer
+	a16
+	lda	#1
+	sta.l	visualticks
+.step
+	inc	logicframe
+	stz	svar_dist
+	phk
+	pea	(.returned-1)&WM
+	a8
+	lda	al_stratptr+2,x
+	pha
+	a16
+	lda	al_stratptr,x
+	dec	a
+	pha
+	a8
+	rtl
+.returned
+	a8
+	lda	aldead
+	bne	.removed
+	phy
+	a16
+	ldy	playpt
+	lda.w	al_worldx,y
+	sta	player_posx
+	lda.w	al_worldy,y
+	sta	player_posy
+	lda.w	al_worldz,y
+	sta	player_posz
+	a8
+	ply
+	pla
+	dec	a
+	beq	.restore
+	pha
+	a16
+	bra	.step
+.removed
+	pla
+.restore
+	pla
+	sta	framer
+	a16
+	pla
+	sta.l	visualticks
+	pla
+	sta	logicframe
+	pla
+	sta	player_posz
+	pla
+	sta	player_posy
+	pla
+	sta	player_posx
+	ply
+	a8
+.handled
+	sec
+	rtl
+
+clearships_end
+tallytextsync_l
+	php
+	i16
+	phx
+	phy
+	a8i16
+	ldy	viewtoobj
+	beq	.done
+	lda.w	al_stratptr+2,y
+	cmp	#pshipoutofLB3_strat>>16
+	bne	.done
+	a16
+	lda.w	al_stratptr,y
+	cmp	#pshipoutofLB3_strat&WM
+	bne	.done
+	ldx	allst
+.loop
+	a8
+	test_alsflag x,textobj
+	beq	.next
+	lda	al_stratptr+2,x
+	cmp	#path_istrat>>16
+	bne	.next
+	a16
+	lda	al_stratptr,x
+	cmp	#path_tick_strat&WM
+	bne	.trail
+	a8
+	test_alsflag x,sflag1
+	beq	.next
+	a16
+	bra	.move
+.trail
+	cmp	#trail_tick_strat&WM
+	bne	.next
+.move
+	lda	viewposz
+	sec
+	sbc	al_sword1,x
+	clc
+	adc	al_worldz,x
+	sta	al_worldz,x
+	lda	viewposz
+	sta	al_sword1,x
+.next
+	a16
+	lda	_next,x
+	tax
+	bne	.loop
+.done
+	ply
+	plx
+	plp
+	rtl
+
 pshipDIVEGND_Istrat
 	s_start_strat
 	s_set_alvar	B,x,al_rotx,#deg90
@@ -1146,20 +1396,8 @@ viewDIVEGND_strat
 	s_copy_alvar2alvar.w	W,x,al_vz,y,al_vz
 	s_add_vecs2pos		x
 
-	s_copy_alvar2var	W,x,pviewposx,al_worldx
-	s_copy_alvar2var	W,x,pviewposy,al_worldy
-	s_copy_alvar2var	W,x,pviewposz,al_worldz
-
-	s_set_objtobeplayer	y
-	s_copy_pos		y,x
-
-
-;	d_print_alvar		W,x,al_worldy,2
-
-
 	lda.l	visualticks
-	bne	.runticks
-	s_end_strat
+	lbeq	.done
 .runticks
 	sta	svar_byte2
 .turntick
@@ -1183,6 +1421,12 @@ viewDIVEGND_strat
 	dec	svar_byte2
 	s_bne	.turntick
 .done
+	s_copy_alvar2var	W,x,pviewposx,al_worldx
+	s_copy_alvar2var	W,x,pviewposy,al_worldy
+	s_copy_alvar2var	W,x,pviewposz,al_worldz
+
+	s_set_objtobeplayer	y
+	s_copy_pos		y,x
     	s_end_strat
 
 
@@ -1236,6 +1480,7 @@ lseqdoor2_Istrat		; last sequence exit.
 
 
 ;*******************************************************************************
+clearescape_start
 shiplb1_Istrat
 	s_start_strat
 	s_set_alsflag	x,colldisable
@@ -1558,16 +1803,18 @@ viewOutofLB1_strat
 
 
 
+	s_gen_3dvecs		x,al_roty,al_rotx,al_vel
+	s_add_vecs2pos		x
+
+; Publish the completed camera step, like the target ship.
 	s_copy_alvar2var	W,x,viewposx,al_worldx
 	s_copy_alvar2var	W,x,viewposy,al_worldy
 	s_copy_alvar2var	W,x,viewposz,al_worldz
-
-	s_gen_3dvecs		x,al_roty,al_rotx,al_vel
-	s_add_vecs2pos		x
 	s_end_strat
 
 
 ;**********************************************************************************
+clearlast_start
 shipoutofLB3_Istrat		; player in space fly past.
 	s_start_strat	
 	s_set_strat	x,shipoutofLB3_strat
@@ -1866,8 +2113,12 @@ viewlb3move_srou
 	rts
 
 ;**********************************************************************************
+clearlast_end
 pshipcolony_Istrat
 	s_start_strat
+	stz	al_rotx,x
+	stz	al_roty,x
+	stz	al_rotz,x
 	s_set_alvar	B,x,al_sbyte1,#1
 	s_set_strat	x,pshipcolony_strat
 	s_set_speed	x,#medpspeed
@@ -1893,11 +2144,11 @@ pshipcolony_strat
 	s_achase_alvar2alvar	B,x,al_rotx,x,al_sbyte3,3
 
 .cont	
+	jsl	centercolonyx_l
 	s_copy_alvar2var	W,x,pviewposx,al_worldx
 	s_copy_alvar2var	W,x,pviewposy,al_worldy
 	s_copy_alvar2var	W,x,pviewposz,al_worldz
 	s_add_var		W,bgsscrollZ,#medpspeed
-
 	s_gen_3dvecs		x,al_roty,al_rotx,al_vel
 	s_add_vecs2pos		x
 	s_end_strat
@@ -1944,8 +2195,8 @@ pshipcolonyrot_tab
 	db	((40*pipescale)/medpspeed),(deg360/12)*0
 	db	((40*pipescale)/medpspeed),(deg360/12)*1
 	db	((40*pipescale)/medpspeed),(deg360/12)*2
-	db	((40*pipescale)/medpspeed)+4,(deg360/12)*3
-	db	((40*pipescale)/medpspeed),(deg360/12)*3
+	db	((40*pipescale)/medpspeed)+4,((deg360/12)*3)-2
+	db	((40*pipescale)/medpspeed),((deg360/12)*3)-2
 
 	db	((40*pipescale)/medpspeed)+3,(deg360/12)*2
 	db	((40*pipescale)/medpspeed)+3,(deg360/12)*1
@@ -1953,7 +2204,7 @@ pshipcolonyrot_tab
 	db	((40*pipescale)/medpspeed),(deg360/12)*-1
 	db	((40*pipescale)/medpspeed),(deg360/12)*-2
 
-	db	((40*pipescale)/medpspeed),(deg360/12)*-3
+	db	((40*pipescale)/medpspeed),((deg360/12)*-3)+2
 	db	((40*pipescale)/medpspeed),(deg360/12)*-2
 	db	((40*pipescale)/medpspeed)-5,(deg360/12)*-1
 

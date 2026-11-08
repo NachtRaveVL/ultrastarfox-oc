@@ -655,7 +655,7 @@ maketotalscore
 
 	lda	#msg_total&WM
 	ldx	#0
-	ldy	#-1600
+	ldy	#-2050
 	jsr	makeendobj
 	setpath
 	a16
@@ -688,7 +688,7 @@ maketotalscore
 	ora	#0
 	je	.sub10do
 	ldx	#-300
-	ldy	#-1400
+	ldy	#-1750
 	jsr	makeendobjn
 	setpath
 .sub10do	lda	cla2
@@ -703,22 +703,22 @@ maketotalscore
 	txa
 	ora	#0
 	ldx	#-150
-	ldy	#-1400
+	ldy	#-1750
 	jsr	makeendobjn
 	setpath
 .sub1do	lda	cla2
 	ldx	#000
-	ldy	#-1400
+	ldy	#-1750
 	jsr	makeendobjn
 	setpath
 	lda	#0
 	ldx	#150
-	ldy	#-1400
+	ldy	#-1750
 	jsr	makeendobjn
 	setpath
 	lda	#0
 	ldx	#300
-	ldy	#-1400
+	ldy	#-1750
 	jsr	makeendobjn
 	setpath
 
@@ -736,7 +736,7 @@ maketotalscore
 
 	lda	#msg_ave&WM
 	ldx	#0
-	ldy	#-850
+	ldy	#-1250
 	jsr	makeendobj
 	setpath
 	inc	vram3addr
@@ -752,7 +752,7 @@ maketotalscore
 
 	pla
 	ldx	#0
-	ldy	#-650
+	ldy	#-950
 	jsr	makeendobj
 	setpath
 	inc	vram3addr
@@ -1481,6 +1481,7 @@ dopause	php
 	lda	joy1h
 	bit	#key_start
 	bne	.wait3
+	stz	framec		; discard time spent paused
 	stz	cont0
 	stz	contl0
 	stz	cont0l
@@ -1639,6 +1640,17 @@ initscreen_l
 
 ;clear video RAM
 	screen_off
+
+	; Restore the HDMA tables before the next gameplay or ending display.
+	ai16
+	ldx	#0
+.hdmainit	lda.l	hdma_start,x
+	sta.l	xhdma_start,x
+	inx
+	inx
+	cpx	#hdma_end-hdma_start
+	bcc	.hdmainit
+	ai8
 
 	stz	cgadd
 	stz	vmaddl

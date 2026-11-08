@@ -454,14 +454,7 @@ planetseq_l
 	sta.l	mspr_pal
 .full
 	jsr	switchbuffer_fast	; switch in new screen
-	lda	gameframe
-	bit	#2
-	beq	.off
-	jsl	drawplanetlines_l
-	bra	.on
-.off
-	jsl	undrawplanetlines_l
-.on
+	jsl	drawplanetlines_l	; keep the selected route visible
 	jsl	read_joypad_l		; timed key read
 
 	lda	trig0			; check for stage select
@@ -565,9 +558,6 @@ planetseq_l
 .newroute	inc	stage			; cheat
 	jsr	waitdma224		; cheat
 	jsl	undrawplanetlines_l	; cheat
-	lda	#10
-	sta	stage
-	jsl	drawplanetlines_l
 	stz	stage			; cheat
 	lda	whichroute		; cheat
 	dec	a			; cheat
@@ -636,6 +626,7 @@ planetseq_l
 	brl	.waitoncemore
 	brl	.cheatloop		; cheat
 .cheatfinished				; cheat
+	jsl	undrawplanetlines_l
 	jsl	drawplanetlines_l	; cheat
 	jmp	.continuewithgame	; cheat
 
@@ -1197,6 +1188,7 @@ planetseq_l
 setshippos
 	php
 	a8i16
+	jsl	undrawplanetlines_l
 	jsl	drawplanetlines_l
 
 	lda	currentplanet
@@ -1215,7 +1207,6 @@ setshippos
 	lda	#20
 	sta	stage
 	jsl	drawplanetlines_l
-
 	pla
 	sta	stage
 

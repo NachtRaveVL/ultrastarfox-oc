@@ -190,6 +190,7 @@ truck_accel
 	bcc	.nomoremove
 	lda	#10
 .nomoremove	sta	al_sword1,x
+	jsl	framescaleA_l
 	clc
 	adc	al_worldz,x
 	sta	al_worldz,x
@@ -5588,16 +5589,12 @@ madtrucker_istrat
 	sbc	#120
 	cmp.w	al_worldz,y
 	s_jsr	truck_accel
-	shorta
-	s_set_objtobeplayer	y
 	a16
 	lda	al_worldz,x
 	sec
 	sbc	#50
 	cmp.w	al_worldz,y
-	a8
 	s_bpl	.move
-	a16
 	lda.w	al_worldz,y
 	clc
 	adc	#50
@@ -5641,6 +5638,7 @@ madtrucker_istrat
 	jml		hitflash_istrat
 ;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 .move
+	a8
 	s_add_playerz	x
 .nomove
 	s_set_objtobealvar	y,x,al_ptr

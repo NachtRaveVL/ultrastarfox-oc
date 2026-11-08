@@ -164,6 +164,7 @@ stratsfrozen
 	sta	lastcontl0
 
 	jsl	getview_l
+	jsl	tallytextsync_l
 
 	jsl	dosounds_l
 	jsl	palgoto_l

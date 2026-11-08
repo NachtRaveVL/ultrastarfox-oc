@@ -57,6 +57,7 @@
 	global	updoor_Istrat
 	global	colonyexit_Istrat
 	global	gate3_Istrat
+	global	bossseamonexp_Istrat
 	global	bossSeamon_Istrat
 	global	dpilar_Istrat
 	global	halfd_Istrat

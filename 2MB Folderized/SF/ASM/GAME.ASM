@@ -32,7 +32,25 @@ getview_l
 	and	#viewtype_fpos
 	rlbne	.fpos
 
-
+; The final camera strategy runs before its target ship. Anchor after all
+; elapsed ship steps, rather than predicting a single future render update.
+	i16
+	ldx	viewtoobj
+	beq	.nofinalanchor
+	lda	al_stratptr+2,x
+	cmp	#pshipoutofLB3_strat>>16
+	bne	.nofinalanchor
+	a16
+	lda	al_stratptr,x
+	cmp	#pshipoutofLB3_strat&WM
+	bne	.nofinalanchor
+	lda	al_worldx,x
+	sta	pviewposx
+	lda	al_worldy,x
+	sta	pviewposy
+	lda	al_worldz,x
+	sta	pviewposz
+.nofinalanchor
 	a16i8
 	lda	viewshakeX
 	sexa

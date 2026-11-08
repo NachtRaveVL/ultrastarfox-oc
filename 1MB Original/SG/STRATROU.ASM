@@ -2394,8 +2394,6 @@ Do_strat_l
 	cpx	dummyobj
 	lbeq	.estrat
 
-	s_clr_alcollflag	x,firstframe
-
 	lda	al_worldx,x
 	sta	stratobj_posx
 	lda	al_worldy,x
@@ -2426,7 +2424,7 @@ Do_strat_l
 	sta	tjmp+2
 	a16
 	lda.l	alx_expstratptr,x 
-	bne	.dostr
+	lbne	.dostr
 	a8
 .nes	
 	s_clr_altype	x,nuked
@@ -2450,6 +2448,20 @@ Do_strat_l
 	bne	.dostr
 	a8
 .ns
+	lda	al_stratptr+2,x
+	cmp	#cleartiming_start>>16
+	beq	.clear
+; Banks 4/6 and 8/10 share the timing filter; keep the dispatch compact.
+	and	#$fd
+	cmp	#(path_istrat>>16)&$fd
+	beq	.clear
+	cmp	#(boss2_Istrat>>16)&$fd
+	bne	.normal
+.clear
+	jsl	clearsteps_l
+	bcs	.estrat
+.normal
+	s_clr_alcollflag	x,firstframe
 	a16
 	lda	al_stratptr,x
 	beq	.strad
@@ -2479,6 +2491,7 @@ Do_strat_l
 
 	sta	tjmp
 	a8
+	s_clr_alcollflag	x,firstframe
 	lda	#(.estrat>>16)&255
 	pha
 	a16
@@ -2999,10 +3012,10 @@ sr8_achase_alvar5
 	brl			sr_achase_alvar_end
 sr8_achase_alvar6      
 	Achase_var2A		tpx,6,sr_achase_alvar_fin
-	brl			sr_achase_alvar_end
+	bra			sr_achase_alvar_end
 sr8_achase_alvar7
 	Achase_var2A		tpx,7,sr_achase_alvar_fin
-	brl			sr_achase_alvar_end
+	bra			sr_achase_alvar_end
 
 
 
