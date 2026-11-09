@@ -1695,7 +1695,8 @@ colony0_strat
 	s_set_objtobeplayer	y
 
 	s_jmp_alsflag		x,sflag1,.nthere
-	s_jmp_Zdistmore		x,y,#200<<2,.nclose	; 70<<2
+	s_jmp_alsflag		x,sflag2,.finishing
+	s_jmp_Zdistmore		x,y,#900,.nclose	; 70<<2
 	s_set_alsflag		x,colldisable
 
 	s_jmp_varAND	B,pshipflags2,#psf2_playerHP0,colony0_cont
@@ -1704,6 +1705,30 @@ colony0_strat
 ;------------------------------------------------
 	s_or_var		B,pstratflags,#pstf_inseq
 
+	s_playerctrl		off
+	a16
+	lda.w	al_worldx,y
+	nega
+	rept	3
+	asra
+	endr
+	jsl	framescaleA_l
+	clc
+	adc.w	al_worldx,y
+	sta.w	al_worldx,y
+	lda	viewcy
+	sec
+	sbc.w	al_worldy,y
+	rept	3
+	asra
+	endr
+	jsl	framescaleA_l
+	clc
+	adc.w	al_worldy,y
+	sta.w	al_worldy,y
+	a8
+	s_jmp_Zdistmore		x,y,#600,.nthere
+	s_jmp_outxydistrng	x,y,#0,#(16<<2),.nthere
 	lda		splayerflymode
 	cmp		#spfm_inside
 	bne		.nin
@@ -1713,18 +1738,9 @@ colony0_strat
 	jsl		changeviewmode_l
 	plx
 .nin
-;------------------------------------------------
-
-	s_playerctrl		off
-	lda.l	visualticks
-	beq		.centered
-	sta		al_sbyte1,x
-.centertick
-	s_achase_alvar		W,y,al_worldx,#0,4
-	s_achase_alvar		W,y,al_worldy,viewcy,4
-	dec		al_sbyte1,x
-	bne		.centertick
-.centered
+	s_set_alsflag		x,sflag2
+.finishing
+	s_jmp_varNE	B,splayerflymode,#spfm_norm,.nthere
 	s_jmp_objinfront	x,y,.nthere
 	s_jmp_outxydistrng	x,y,#0,#(16<<2),.nthere
 	s_or_var		B,gameflags,#gf_stratdone1
