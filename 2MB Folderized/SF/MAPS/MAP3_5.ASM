@@ -62,8 +62,8 @@ high	=	-600
 	mapobj	0000,-1200,00,5000,RO_6,hard180yr_ISTRAT
 	mapobj	0000,1500,00,5000,RO_6,hard180yr_ISTRAT 
 ;friend
-	pathobj	0000,-750,-400,0000,friendship_4,chase6_1,10,10
-	pathobj	1500,-720,-400,0000,zaco_a,chase6_2,10,10
+	pathobj	0000,-750,-500,0000,friendship_4,chase6_1,10,10
+	pathobj	1500,-720,-500,0000,zaco_a,chase6_2,10,10
 	skillfly_bonus 0000,0000,-120,1300,item_5,item5_istrat
 	setalvar	sbyte1,1
 	mapobj	0000,0700,-600,4000,RO_6,hard180yr_ISTRAT
@@ -241,8 +241,8 @@ high	=	-600
 	maploop	.woodmiss,04
 	mapobj	1000,700,0000,5000,RO_6,hard180yr_ISTRAT   ;
 ;friend
-	pathobj	0000,-750,-400,0000,friendship_4,chase6_1,10,10
-	pathobj	0400,-720,-400,0000,zaco_a,chase6_2,10,10
+	pathobj	0000,-750,-500,0000,friendship_4,chase6_1,10,10
+	pathobj	0400,-720,-500,0000,zaco_a,chase6_2,10,10
 	pathcspecial	0000,150,-600,3000,tank_1,e_tank,10,10
 	setalvar	rotz,deg180
 	pathcspecial	0000,-150,-600,3000,tank_1,e_tank,10,10
