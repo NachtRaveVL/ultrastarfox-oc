@@ -815,7 +815,7 @@ calctotalscore	stz	tpa		;add all special perc and print it *100
 
 ; Position for "TOTAL SCORE" text
 totalxpos	equ	500
-totalypos	equ	750
+totalypos	equ	350
 totalzpos	equ	3600
 
 maketotalscore2
@@ -871,7 +871,7 @@ maketotalscore2
 	ora	#0 ; OR A with 0
 	je	.sub10do ; Jump to .sub10do sublabel if equal to 0
 	ldx	#totalxpos-300 ; Load result of Total X pos - 300 into X
-	ldy	#totalypos+150 ; Load result of Total Y pos - 150 into Y
+	ldy	#totalypos+250 ; Load result of Total Y pos - 150 into Y
 	jsr	makeendobjn2 ; Go to makeendobjn2 to create text on screen
 .sub10do	lda	cla2 ; Load current % var into A
 	ldx	#-1 ; Load -1 into X
@@ -885,19 +885,19 @@ maketotalscore2
 	txa ; transfer X to A
 	ora	#0 ; OR A with 0
 	ldx	#totalxpos-150 ; Load result of Total X pos - 150 into X
-	ldy	#totalypos+150 ; Load result of Total Y pos + 150 into Y
+	ldy	#totalypos+250 ; Load result of Total Y pos + 150 into Y
 	jsr	makeendobjn2 ; Go to makeendobjn2 to create text on screen
 .sub1do	lda	cla2 ; Load current % var into A
 	ldx	#totalxpos+0 ; Load totalxpos+0 into A
-	ldy	#totalypos+150 ; Load result of Total Y pos + 150 into Y
+	ldy	#totalypos+250 ; Load result of Total Y pos + 150 into Y
 	jsr	makeendobjn2 ; Go to makeendobjn2 to create text on screen
 	lda	#0 ; Load 0 into A
 	ldx	#totalxpos+150 ; Load result of Total X pos + 150 into X
-	ldy	#totalypos+150 ; Load result of Total Y pos + 150 into Y
+	ldy	#totalypos+250 ; Load result of Total Y pos + 150 into Y
 	jsr	makeendobjn2 ; Go to makeendobjn2 to create text on screen
 	lda	#0 ; Load 0 into A
 	ldx	#totalxpos+300 ; Load result of Total X pos + 300 into X
-	ldy	#totalypos+150 ; Load result of Total Y pos + 150 into Y
+	ldy	#totalypos+250 ; Load result of Total Y pos + 150 into Y
 	jsr	makeendobjn2 ; Go to makeendobjn2 to create text on screen
 	a16 ; Set A to 16 bit
 	lda	#10 ; Load 10 into A
@@ -911,7 +911,7 @@ maketotalscore2
 
 	lda	#msg_ave&WM ; Load MARIO text data for "AVERAGE SCORE" into A
 	ldx	#totalxpos ; Load total X pos into X
-	ldy	#totalypos+300 ; Load total Y pos + 300 into Y
+	ldy	#totalypos+500 ; Load total Y pos + 300 into Y
 	jsr	makeendobj2 ; Go to makeendobj2 to create text on screen
 
 	a16 ; Set A to 16 bit
@@ -925,7 +925,7 @@ maketotalscore2
 
 	pla ; Pull A from stack
 	ldx	#totalxpos+0 ; Load result of Total X pos + 0 into X
-	ldy	#totalypos+450 ; Load result of Total Y pos + 450 into Y
+	ldy	#totalypos+750 ; Load result of Total Y pos + 450 into Y
 	jsr	makeendobj2 ; Go to makeendobj2 to create text on screen
 .fail
 	rts ; Return from subroutine

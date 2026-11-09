@@ -66,7 +66,7 @@ high	=	-600
 	mapobj	0000,1500,00,5000,RO_6,hard180yr_ISTRAT 
 ;friend
 	pathobj	0000,-750,-400,0000,friendship_4,chase6_1,10,10
-	pathobj	1500,-750,-400,0000,zaco_a,chase6_2,10,10
+	pathobj	1500,-720,-400,0000,zaco_a,chase6_2,10,10
 ;	mapobj	0000,-700,-600,5000,RO_6,hard180yr_ISTRAT
 ;	setalvar	rotz,deg180
 ;	mapwait	0500
@@ -249,7 +249,7 @@ high	=	-600
 	mapobj	1000,700,0000,5000,RO_6,hard180yr_ISTRAT   ;
 ;friend
 	pathobj	0000,-750,-400,0000,friendship_4,chase6_1,10,10
-	pathobj	0400,-750,-400,0000,zaco_a,chase6_2,10,10
+	pathobj	0400,-720,-400,0000,zaco_a,chase6_2,10,10
 	pathcspecial	0000,150,-600,3000,tank_1,e_tank,10,10
 	setalvar	rotz,deg180
 	pathcspecial	0000,-150,-600,3000,tank_1,e_tank,10,10

@@ -794,7 +794,7 @@ calctotalscore	stz	tpa		;add all special perc and print it *100
 .addx	rts
 
 totalxpos	equ	500
-totalypos	equ	750
+totalypos	equ	350
 totalzpos	equ	3600
 
 maketotalscore2
@@ -850,7 +850,7 @@ maketotalscore2
 	ora	#0
 	je	.sub10do
 	ldx	#totalxpos-300
-	ldy	#totalypos+150
+	ldy	#totalypos+250
 	jsr	makeendobjn2
 .sub10do	lda	cla2
 	ldx	#-1
@@ -864,19 +864,19 @@ maketotalscore2
 	txa
 	ora	#0
 	ldx	#totalxpos-150
-	ldy	#totalypos+150
+	ldy	#totalypos+250
 	jsr	makeendobjn2
 .sub1do	lda	cla2
 	ldx	#totalxpos+0
-	ldy	#totalypos+150
+	ldy	#totalypos+250
 	jsr	makeendobjn2
 	lda	#0
 	ldx	#totalxpos+150
-	ldy	#totalypos+150
+	ldy	#totalypos+250
 	jsr	makeendobjn2
 	lda	#0
 	ldx	#totalxpos+300
-	ldy	#totalypos+150
+	ldy	#totalypos+250
 	jsr	makeendobjn2
 	a16
 	lda	#10
@@ -890,7 +890,7 @@ maketotalscore2
 
 	lda	#msg_ave&WM
 	ldx	#totalxpos
-	ldy	#totalypos+300
+	ldy	#totalypos+500
 	jsr	makeendobj2
 
 	a16
@@ -904,7 +904,7 @@ maketotalscore2
 
 	pla
 	ldx	#totalxpos+0
-	ldy	#totalypos+450
+	ldy	#totalypos+750
 	jsr	makeendobj2
 .fail
 	rts

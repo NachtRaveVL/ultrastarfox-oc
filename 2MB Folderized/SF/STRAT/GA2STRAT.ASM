@@ -1683,7 +1683,6 @@ spacebar3_strat
 colony0_Istrat
 	s_start_strat	
 	s_set_strat	x,colony0_strat
-	s_set_alvar	W,x,al_sword1,pviewposz
 	s_set_aldata	x,#10,#10
 	s_and_var		B,gameflags,#~gf_stratdone1
 	s_set_colltype		x,enemy1
@@ -1747,15 +1746,10 @@ colony0_strat
 
 colony0_cont
 	a16
-	lda	#20
+	lda	pviewvelz
+	sec
+	sbc	#20
 	jsl	framescaleA_l
-	sta	svar_word1
-	lda	pviewposz
-	sec
-	sbc	al_sword1,x
-	sta	al_sword1,x
-	sec
-	sbc	svar_word1
 	clc
 	adc	al_worldz,x
 	sta	al_worldz,x
@@ -1767,7 +1761,6 @@ colony0_cont
 colony1_Istrat
 	s_start_strat	
 	s_set_strat	x,colony1_strat
-	s_set_alvar	W,x,al_sword1,pviewposz
 	s_set_alsflag	x,colldisable
 	s_set_altype	x,gnd
 colony1_strat

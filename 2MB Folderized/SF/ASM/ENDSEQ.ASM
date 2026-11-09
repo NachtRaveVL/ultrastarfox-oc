@@ -222,6 +222,17 @@ q_set_viewhgt MACRO
 
 ;--------------------------------------------------------------------------
 
+initendbg	lda	#1+8
+	sta	bgmode
+	lda	#1+2+4
+	sta	tm
+	stz	windowmode
+	lda	#(0c000h/2)>>12
+	sta	bg34nba
+	lda	#(0e000h/2)>>8+1
+	sta	bg3sc
+	rts
+
 endseq_l	php
 
 	a8
@@ -341,16 +352,7 @@ endseq_l	php
 	stz gameframe
     stz logicframe
     stz logicframeacc
-	lda	#1+8
-	sta	bgmode
-	lda	#1+2+4
-	sta	tm
-	stz	windowmode
-
-	lda	#(0c000h/2)>>12
-	sta	bg34nba
-	lda	#(0e000h/2)>>8+1
-	sta	bg3sc
+	jsr	initendbg
 
 	decvramnotrans	0,vchr_logback,bgetest2ccr,6*k
 	decvramnotrans	0,vsc_base2+2*k,bgetest2pcr,4*k,scr_offset
@@ -469,7 +471,7 @@ reptstrats
 	lda.l	visualticks
 	pha
 	a8
-	lda	#3
+	lda	#1
 	sta	framer
 	a16
 	txa
@@ -487,7 +489,6 @@ reptstrats
 	sta	framer
 	a16
 	plx
-	lda	#0
 	rts
 
 
@@ -599,6 +600,7 @@ getaboss	php
 	lda	#$80
 	setinidisp1
 	sta	inidisp
+	jsr	initendbg
 
 	a16
 	stz	mapcnt
@@ -689,7 +691,7 @@ getaboss	php
 
 	shorta
 	longi
-setmybga	dmacgram	0,0,(bgetestpac),512
+setmybga	dmacgram	0,0,(bgetest0pac),512
 	jmp		qsetit
 setmybgb	dmacgram	0,0,(bgetest0pac),512
 qsetit	decvram		0,0e000h/2,bgetestpcr,4*k,256
@@ -817,7 +819,6 @@ scrolloutl	php
 	longa
 	longi
 boss11_ihan	q_start
-	q_set_bg		a
 	q_set_bg		a
 	q_set_han		boss11_han
 	q_set_cnt		#180
@@ -1138,9 +1139,17 @@ bossfinaldemo	defdemo	0000,0,Space_viewCY,-200,face_b,monolith_istrat
 demotxtbase
 boss11txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 1'
+	IFNE	FRENCH
+	DB	'ETAPE 1'
 	ELSEIF
-	DB	'ROUTE 1'
+	IFNE	SPANISH
+	DB	'ETAPA 1'
+	ELSEIF
+	DB	'STAGE 1'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 1'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 1'
@@ -1149,9 +1158,17 @@ boss11txt	SETDPOS	7*32+6
 	DB	0
 boss21txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 1'
+	IFNE	FRENCH
+	DB	'ETAPE 1'
 	ELSEIF
-	DB	'ROUTE 2'
+	IFNE	SPANISH
+	DB	'ETAPA 1'
+	ELSEIF
+	DB	'STAGE 1'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 1'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 1'
@@ -1160,9 +1177,17 @@ boss21txt	SETDPOS	7*32+6
 	DB	0
 boss31txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 1'
+	IFNE	FRENCH
+	DB	'ETAPE 1'
 	ELSEIF
-	DB	'ROUTE 3'
+	IFNE	SPANISH
+	DB	'ETAPA 1'
+	ELSEIF
+	DB	'STAGE 1'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 1'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 1'
@@ -1204,9 +1229,17 @@ boss31txt2	SETDPOS	25*32+6
 
 boss12txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 2'
+	IFNE	FRENCH
+	DB	'ETAPE 2'
 	ELSEIF
-	DB	'ROUTE 1'
+	IFNE	SPANISH
+	DB	'ETAPA 2'
+	ELSEIF
+	DB	'STAGE 2'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 2'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 2'
@@ -1215,9 +1248,17 @@ boss12txt	SETDPOS	7*32+6
 	DB	0
 boss22txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 2'
+	IFNE	FRENCH
+	DB	'ETAPE 2'
 	ELSEIF
-	DB	'ROUTE 2'
+	IFNE	SPANISH
+	DB	'ETAPA 2'
+	ELSEIF
+	DB	'STAGE 2'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 2'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 2'
@@ -1246,9 +1287,17 @@ boss22txt2	SETDPOS	25*32+6
 	DB	0,0
 boss32txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 2'
+	IFNE	FRENCH
+	DB	'ETAPE 2'
 	ELSEIF
-	DB	'ROUTE 3'
+	IFNE	SPANISH
+	DB	'ETAPA 2'
+	ELSEIF
+	DB	'STAGE 2'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 2'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 2'
@@ -1273,9 +1322,17 @@ boss32txt2	SETDPOS	25*32+6
 
 boss13txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 3'
+	IFNE	FRENCH
+	DB	'ETAPE 3'
 	ELSEIF
-	DB	'ROUTE 1'
+	IFNE	SPANISH
+	DB	'ETAPA 3'
+	ELSEIF
+	DB	'STAGE 3'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 3'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 3'
@@ -1309,9 +1366,17 @@ boss13txt2	SETDPOS	25*32+6
 	DB	0,0
 boss23txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 3'
+	IFNE	FRENCH
+	DB	'ETAPE 3'
 	ELSEIF
-	DB	'ROUTE 2'
+	IFNE	SPANISH
+	DB	'ETAPA 3'
+	ELSEIF
+	DB	'STAGE 3'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 3'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 3'
@@ -1335,9 +1400,17 @@ boss23txt2	SETDPOS	25*32+6
 	DB	0,0
 boss33txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 3'
+	IFNE	FRENCH
+	DB	'ETAPE 3'
 	ELSEIF
-	DB	'ROUTE 3'
+	IFNE	SPANISH
+	DB	'ETAPA 3'
+	ELSEIF
+	DB	'STAGE 3'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 3'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 3'
@@ -1362,9 +1435,17 @@ boss33txt2	SETDPOS	25*32+6
 
 boss14txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 4'
+	IFNE	FRENCH
+	DB	'ETAPE 4'
 	ELSEIF
-	DB	'ROUTE 1'
+	IFNE	SPANISH
+	DB	'ETAPA 4'
+	ELSEIF
+	DB	'STAGE 4'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 4'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 4'
@@ -1388,9 +1469,17 @@ boss14txt2	SETDPOS	25*32+6
 	DB	0,0
 boss24txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 4'
+	IFNE	FRENCH
+	DB	'ETAPE 4'
 	ELSEIF
-	DB	'ROUTE 2'
+	IFNE	SPANISH
+	DB	'ETAPA 4'
+	ELSEIF
+	DB	'STAGE 4'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 4'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 4'
@@ -1418,9 +1507,17 @@ boss24txt2	SETDPOS	25*32+6
 	DB	0,0
 boss34txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 4'
+	IFNE	FRENCH
+	DB	'ETAPE 4'
 	ELSEIF
-	DB	'ROUTE 3'
+	IFNE	SPANISH
+	DB	'ETAPA 4'
+	ELSEIF
+	DB	'STAGE 4'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 4'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 4'
@@ -1449,9 +1546,17 @@ boss34txt2	SETDPOS	25*32+6
 
 boss15txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 5'
+	IFNE	FRENCH
+	DB	'ETAPE 5'
 	ELSEIF
-	DB	'ROUTE 1'
+	IFNE	SPANISH
+	DB	'ETAPA 5'
+	ELSEIF
+	DB	'STAGE 5'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 5'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 5'
@@ -1460,9 +1565,17 @@ boss15txt	SETDPOS	7*32+6
 	DB	0
 boss25txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 5'
+	IFNE	FRENCH
+	DB	'ETAPE 5'
 	ELSEIF
-	DB	'ROUTE 2'
+	IFNE	SPANISH
+	DB	'ETAPA 5'
+	ELSEIF
+	DB	'STAGE 5'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 5'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 5'
@@ -1502,9 +1615,17 @@ boss25txt2	SETDPOS	25*32+6
 
 boss16txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 6'
+	IFNE	FRENCH
+	DB	'ETAPE 6'
 	ELSEIF
-	DB	'ROUTE 1'
+	IFNE	SPANISH
+	DB	'ETAPA 6'
+	ELSEIF
+	DB	'STAGE 6'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 6'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 6'
@@ -1513,9 +1634,17 @@ boss16txt	SETDPOS	7*32+6
 	DB	0
 boss26txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 6'
+	IFNE	FRENCH
+	DB	'ETAPE 6'
 	ELSEIF
-	DB	'ROUTE 2'
+	IFNE	SPANISH
+	DB	'ETAPA 6'
+	ELSEIF
+	DB	'STAGE 6'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 6'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 6'
@@ -1540,9 +1669,17 @@ boss26txt2	SETDPOS	25*32+6
 
 boss35txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 5'
+	IFNE	FRENCH
+	DB	'ETAPE 5'
 	ELSEIF
-	DB	'ROUTE 3'
+	IFNE	SPANISH
+	DB	'ETAPA 5'
+	ELSEIF
+	DB	'STAGE 5'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 5'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 5'
@@ -1567,9 +1704,17 @@ boss35txt2	SETDPOS	25*32+6
 
 boss36txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 6'
+	IFNE	FRENCH
+	DB	'ETAPE 6'
 	ELSEIF
-	DB	'ROUTE 3'
+	IFNE	SPANISH
+	DB	'ETAPA 6'
+	ELSEIF
+	DB	'STAGE 6'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 6'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 6'
@@ -1595,9 +1740,17 @@ boss36txt2	SETDPOS	25*32+6
 
 boss37txt	SETDPOS	7*32+6
 	IFEQ	GERMAN
-	DB	'LEVEL 7'
+	IFNE	FRENCH
+	DB	'ETAPE 7'
 	ELSEIF
-	DB	'ROUTE 3'
+	IFNE	SPANISH
+	DB	'ETAPA 7'
+	ELSEIF
+	DB	'STAGE 7'
+	ENDC
+	ENDC
+	ELSEIF
+	DB	'STUFE 7'
 	ENDC
 ;	SETDPOS	8*32+6
 ;	DB	'STAGE 7'
@@ -1624,15 +1777,31 @@ boss37txt2	SETDPOS	25*32+6
 
 bossfinaltxt	SETDPOS	7*32+6
 	IFEQ	GERMAN
+	IFNE	FRENCH
+	DB	"ETAPE"
+	ELSEIF
+	IFNE	SPANISH
+	DB	"ETAPA"
+	ELSEIF
 	DB	"FINAL"
+	ENDC
+	ENDC
 	ELSEIF
 	DB	"LETZTE"
 	ENDC
 	SETDPOS	8*32+6
 	IFEQ	GERMAN
-	DB	"STAGE"
+	IFNE	FRENCH
+	DB	"FINALE"
 	ELSEIF
-	DB	"ETAPPE"
+	IFNE	SPANISH
+	DB	"FINAL"
+	ELSEIF
+	DB	"STAGE"
+	ENDC
+	ENDC
+	ELSEIF
+	DB	"STUFE"
 	ENDC
 	DB	0
 bossfinaltxt2	SETDPOS	25*32+6
