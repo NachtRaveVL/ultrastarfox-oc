@@ -162,6 +162,13 @@ map3_6
 	mapwait		2000
 .cont2
 
+	start_65816
+	lda		#spfm_norm
+	sta		splayerflymode
+	jsl		changeviewmode_l
+	end_65816
+	mapwait		0500
+
 	fadeoutbgm
 	setbgm	5
 	mapobj	0000,0000,2000,2500,boss_f_3,bossf_Istrat

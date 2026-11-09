@@ -12,12 +12,11 @@ contest	equ	0	; contest version
 german	equ	0	; german version
 french	equ	0	; french version
 
-; NR-RetroWorks 26 MHz GSU-1 target (provisional, chip dependent).
-; Three video frames is the reference movement interval.
-; Match the fork's GSU-1 configuration: fast GSU, original ROM mapping.
+; NR SF-OC configuration always has fast mode/FASTROM enabled
 FASTROM		equ	1
 fast		equ	1
-; round(256 * 21477270 / 26000000) = 211 (211.4685 before rounding).
+; round(256 * 21477270 / 26000000) = ~211 (replace 26000000 with overclock
+; frequency and redo this calculation if you want to use a different clock)
 logicframestep	equ	211
 barrelrolldelay	equ	8
 

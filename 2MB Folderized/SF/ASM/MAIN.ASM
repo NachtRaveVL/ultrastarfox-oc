@@ -710,7 +710,7 @@ maketotalscore
 	ora	#0 ; OR A with 0
 	je	.sub10do ; Jump tp sub10do if equal?
 	ldx	#-300 ; Load -300 into X
-	ldy	#-1750 ; Load -1400 into Y
+	ldy	#-1900 ; Load -1900 into Y
 	jsr	makeendobjn ; Go to makeendobjn subroutine to create text on screen
 	setpath ; Set PATH
 .sub10do	lda	cla2 ; Load target % var into A
@@ -725,22 +725,22 @@ maketotalscore
 	txa ; Transfer X to A
 	ora	#0 ; OR A with 0
 	ldx	#-150 ; Load -150 into X
-	ldy	#-1750 ; Load -1400 into Y
+	ldy	#-1900 ; Load -1900 into Y
 	jsr	makeendobjn ; Go to makeendobjn subroutine to create text on screen
 	setpath ; Set PATH
 .sub1do	lda	cla2 ; Load target % var into A
 	ldx	#000 ; Load 000 into X
-	ldy	#-1750 ; Load -1400 into Y
+	ldy	#-1900 ; Load -1900 into Y
 	jsr	makeendobjn ; Go to makeendobjn subroutine to create text on screen
 	setpath ; Set PATH
 	lda	#0 ; Load 0 into A
 	ldx	#150 ; Load 150 into X
-	ldy	#-1750 ; Load -1400 into Y
+	ldy	#-1900 ; Load -1900 into Y
 	jsr	makeendobjn ; Go to makeendobjn subroutine to create text on screen
 	setpath ; Set PATH
 	lda	#0 ; Load 0 into A
 	ldx	#300 ; Load 300 into X
-	ldy	#-1750 ; Load -1400 into Y
+	ldy	#-1900 ; Load -1900 into Y
 	jsr	makeendobjn ; Go to makeendobjn subroutine to create text on screen
 	setpath ; Set PATH
 
@@ -758,7 +758,7 @@ maketotalscore
 
 	lda	#msg_ave&WM ; Load MARIO text data for "AVERAGE SCORE" into A
 	ldx	#0 ; Load 0 into X
-	ldy	#-1250 ; Load -850 into Y
+	ldy	#-1400 ; Load -1400 into Y
 	jsr	makeendobj ; Go to makeendobj subroutine to create text on screen
 	setpath ; Set PATH
 	inc	vram3addr ; increment palette addr var
@@ -774,7 +774,7 @@ maketotalscore
 
 	pla ; Pull A from stack
 	ldx	#0 ; Load 0 into X
-	ldy	#-950 ; Load -650 into Y
+	ldy	#-1100 ; Load -1100 into Y
 	jsr	makeendobj ; Go to makeendobj subroutine to create text on screen
 	setpath ; Set PATH
 	inc	vram3addr ; increment palette addr var

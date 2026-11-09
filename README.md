@@ -26,7 +26,7 @@ Go [here](#building) to jump straight to the building instructions.
 
 ## Cartridge Hardware Support and ROM Configuration
 
-- Intended for real **GSU-1/GSU-2 Super FX hardware overclocked to approximately 26–28 MHz** using the NR-RetroWorks overclocking adapter PCB
+- Intended for real **GSU-1 Super FX hardware overclocked to approximately 26 MHz** using the NR-RetroWorks overclocking adapter PCB
 - Super FX clock divider disabled via `fast equ 1`
 - Super FX MS1 high-speed multiply enabled
 - FastROM support

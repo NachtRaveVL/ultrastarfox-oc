@@ -690,7 +690,7 @@ maketotalscore
 	ora	#0
 	je	.sub10do
 	ldx	#-300
-	ldy	#-1750
+	ldy	#-1900
 	jsr	makeendobjn
 	setpath
 .sub10do	lda	cla2
@@ -705,22 +705,22 @@ maketotalscore
 	txa
 	ora	#0
 	ldx	#-150
-	ldy	#-1750
+	ldy	#-1900
 	jsr	makeendobjn
 	setpath
 .sub1do	lda	cla2
 	ldx	#000
-	ldy	#-1750
+	ldy	#-1900
 	jsr	makeendobjn
 	setpath
 	lda	#0
 	ldx	#150
-	ldy	#-1750
+	ldy	#-1900
 	jsr	makeendobjn
 	setpath
 	lda	#0
 	ldx	#300
-	ldy	#-1750
+	ldy	#-1900
 	jsr	makeendobjn
 	setpath
 
@@ -738,7 +738,7 @@ maketotalscore
 
 	lda	#msg_ave&WM
 	ldx	#0
-	ldy	#-1250
+	ldy	#-1400
 	jsr	makeendobj
 	setpath
 	inc	vram3addr
@@ -754,7 +754,7 @@ maketotalscore
 
 	pla
 	ldx	#0
-	ldy	#-950
+	ldy	#-1100
 	jsr	makeendobj
 	setpath
 	inc	vram3addr

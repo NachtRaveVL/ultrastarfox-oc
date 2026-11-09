@@ -1633,9 +1633,12 @@ viewmove_srou
 .novc
 
 
-; Anchor to the player position captured before this update.
+; Keep the camera lag in reference-step units, not last update's distance.
+; player_posz is the pre-movement snapshot from init_strats_l.
 	a16
-	lda	player_posz
+	lda	al_worldz,x
+	sec
+	sbc	al_vz,x
 	sta.l	pviewanchorz
 
 ; Follow the player's actual displacement, including integer rounding.

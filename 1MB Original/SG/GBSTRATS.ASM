@@ -582,6 +582,10 @@ boss2_strat
 	s_add_playerZ		x
 	s_brl			.end
 .smoke
+	lda		doingend
+	beq		.smokeplay
+	brl		.end
+.smokeplay
 	jsl		makesmoke_srou_l
 	s_set_alvar		W,y,al_shape,#L2smoke
 	s_jsl			addrnd2posy_srou

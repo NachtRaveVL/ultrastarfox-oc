@@ -1130,7 +1130,7 @@ boss31demo	defdemo	0000,3000,0000,375<<bossa_scale,boss_A_2,bossA_Istrat
 boss32demo	defdemo	0000,000,000,1200,boss_0_1,webmonster_istrat,2_4
 boss33demo	defdemo	0000,-100,0000,2500,boss_d_1,chicken_istrat
 boss35demo	defdemo	0000,0000,0000,2500,boss_2_2,boss2_istrat
-boss36demo	defdemo	0000,0000,2000,2500,boss_f_3,bossf_Istrat
+boss36demo	defdemo	0000,0000,2000,2500,boss_f_4,gnd_Istrat
 boss37demo	defdemo	0000,-100,-500,0000,boss_f_4,airship_istrat
 
 bossfinaldemo	defdemo	0000,0,Space_viewCY,-200,face_b,monolith_istrat
