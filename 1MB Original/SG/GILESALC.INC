@@ -94,6 +94,7 @@ psf3_enginesnd		equ	2	; 0/1 , off/on
 psf3_forcebrake	equ	4
 psf3_nocollisions	equ	8
 psf3_beamball		equ	16
+psf3_noviewchange	equ	32
 
 	alc	specials_dead,1
 

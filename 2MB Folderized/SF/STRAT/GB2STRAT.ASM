@@ -47,6 +47,8 @@
 ; ship that forms and player turns.
 bossF_Istrat		; 0000,0000,2000,2500,boss_f_3,bossf_Istrat
  	s_start_strat
+	lda		#psf3_noviewchange
+	tsb		pshipflags3
 	s_set_aldata	x,#hardHP,#hardAP
 	s_set_alptrs	x,bossFC_strat,hitflash_Istrat,explode_Istrat
 
@@ -115,6 +117,8 @@ bossFC_strat
 
 ;-----------------------------------------------------------------------------
 bossFC2start_init
+	lda		#psf3_noviewchange
+	trb		pshipflags3
 	s_clr_altype	x,gnd
 
 	s_set_objtobechild	y,x,#1
@@ -139,7 +143,7 @@ bossFC2start_init
 
 	s_setnoremove_behind	x
 	s_set_alvar		B,x,al_roty,#deg180
-	s_brl			bossFC2b_init
+	s_bra			bossFC2b_init
 bossFC2_init
 	s_set_alvar		B,x,al_rotz,#-deg90
 bossFC2b_init
@@ -150,7 +154,7 @@ bossFC2_strat
 	s_start_strat
 
 	s_achase_alvar		B,x,al_roty,#deg180,5,.snd
-	s_brl			.nsnd
+	s_bra			.nsnd
 .snd
 	s_jmp_alsflag		x,sflag2,.nsnd
 	s_set_alsflag		x,sflag2

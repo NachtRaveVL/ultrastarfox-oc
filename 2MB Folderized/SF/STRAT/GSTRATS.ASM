@@ -299,7 +299,7 @@ init_strats_l
 	s_jmpNOT_varAND		B,bossflags,#bf_dying,.nbdye
 	s_jmp_notdelay		2,.nbfl
 	jsl	bossflash_l
-	s_brl			.ndalc
+	s_bra			.ndalc
 .nbfl	dealloc_window		dyingred
 .ndalc
 	s_jmpNOT_varAND		B,gameflags,#gf_bossdead,.nbdye
@@ -771,7 +771,7 @@ weapcollide_Istrat
 	s_set_objtobealvar	y,x,al_collobjptr
 	s_jmp_alvarNOTZERO.w	B,y,al_AP,.nzap
 	s_docollAP		x,#framesperAP,#1
-	s_brl			.dcol
+	s_bra			.dcol
 .nzap
 	s_jmpNOT_alcollflag	y,weapon,kill_Istrat
 	s_docoll		x,#framesperAP
@@ -1622,10 +1622,10 @@ chickhmissile1_strat
 
 	s_jmp_lower		y,viewcy,.up
 	s_add_alvar		B,x,al_rotx,#2
-	s_brl			.nhs
+	s_bra			.nhs
 .up
 	s_sub_alvar		B,x,al_rotx,#2
-	s_brl			.nhs
+	s_bra			.nhs
 
 .far
 	s_chk_objptr		y,.nhs
@@ -2059,14 +2059,14 @@ Pelaser_strat
 	sta	al_count,x
 	pla
 	sta	framer
-	s_brl			.lnd
+	s_bra			.lnd
 .fullstep
 	s_add_vecs2pos		x
 	lda	al_count,x
 	sec
 	sbc	framer
 	sta	al_count,x
-	s_brl			.lnd
+	s_bra			.lnd
 .expired
 	s_remove_obj		x
 	dec			numplasers
