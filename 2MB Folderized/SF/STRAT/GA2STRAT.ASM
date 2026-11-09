@@ -190,6 +190,7 @@ amoebastick_Istrat
 
 amoebastick_strat
 	s_start_strat
+	s_playerfire	off
 	s_Set_objtobeplayer	y
  
 	s_copy_alvar2var	W,x,svar_word1,al_sword1
@@ -199,9 +200,7 @@ amoebastick_strat
 	s_add_Roffs2pos		B,x,y,y,svar_word1,svar_word2,#0,1,1,1
 	s_add_playerZ		x	
 
-	s_jmp_notdelay		2,.ngo,al1pt
 	s_jmp_varNOTZERO	B,player_rollZvel,amoebago_init
-.ngo
 
 	s_jmp_notdelay		1,.nhfl
 	s_set_objtobeplayer	y
@@ -228,8 +227,12 @@ amoebastick_strat
 
 amoebago_init
 	s_set_strat	x,amoeba_strat
-	s_clr_var	B,slimecount
+	s_jmp_varZERO	B,slimecount,.lastamoeba
+	s_dec_var	B,slimecount
+	s_jmp_varNOTZERO	B,slimecount,.moreamoebas
+.lastamoeba
 	s_playerfire	on
+.moreamoebas
 	s_jmpto_strat	
 
 

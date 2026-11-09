@@ -542,6 +542,8 @@ stagescore	a16 ; Set A to 16 bit
 	dec	a ; Decrement A
 	bne	.lp2 ; Repeat until A = 0
 
+	a8
+	stz	bg2vofsoverride
 	jsl	endseq_l ; Jump to End Sequence
 
 	a8i16 ; Set A to 8 bit and X/Y to 16 bit

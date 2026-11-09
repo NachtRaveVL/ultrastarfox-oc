@@ -1795,7 +1795,10 @@ playermove_srou
 	s_jmpNOT_varAND		B,pshipflags2,#psf2_wireship,.notwire
 	s_jmp_varlesseq		B,pnumhits,#3-1,.iswire
 	
-	s_beqdec_var		B,wireendflash,.backtonorm
+	lda			wireendflash
+	beq			.backtonorm
+	jsl			tickdownA_l
+	sta			wireendflash
 	s_jmp_varAND		B,wireendflash,#3,.wire
 	stz			shieldup
 	lda			#pshipnum_norm

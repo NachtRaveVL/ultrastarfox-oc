@@ -526,6 +526,8 @@ stagescore	a16
 	dec	a
 	bne	.lp2
 
+	a8
+	stz	bg2vofsoverride
 	jsl	endseq_l
 
 	a8i16
