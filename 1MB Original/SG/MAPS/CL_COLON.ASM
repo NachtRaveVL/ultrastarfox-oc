@@ -8,7 +8,7 @@ gpipescale	=	16
 	mapobjnomem	0,0,-60,4200,pipe_8,colonyexit_Istrat
 	mapwait		4000
 
-pdist	=	960+(20*pipescale)
+pdist	=	940+(20*pipescale)
 
 	setbg	2_6b
 	initbg
@@ -21,13 +21,13 @@ pdist	=	960+(20*pipescale)
 	mappipewait	
 	mappipe	-80,141,0,1,0
 	mappipewait	
-	mappipe	-70,182,1,0,3
+	mappipe	-69,181,1,0,3
 	mappipewait	
-	mappipe	-50,195,2,1,2	; segments around here like to clip
+	mappipe	-49,196,2,1,2	; segments around here like to clip
 	mappipewait	
-	mappipe	-1,220,3,0,5
+	mappipe	-1,218,3,0,5
 	mappipewait	
-	mappipe	39,221,3,0,4
+	mappipe	40,221,3,0,4
 
 
 	mappipe	80,232,2,0,2
@@ -40,9 +40,9 @@ pdist	=	960+(20*pipescale)
 	mappipe	80,373,-2,0,2
 	mappipewait	
 
-	mappipe 70,381,-3,0,3
-	mappipe	42,392,-2,1,2	; segments around here like to clip
-	mappipe	11,423,-1,1,2
+	mappipe 66,383,-3,0,3
+	mappipe	39,392,-2,1,2	; segments around here like to clip
+	mappipe	9,424,-1,1,2
 
 	mappipe	0,463,0,0,0
 	mappipewait	
