@@ -1,3 +1,5 @@
 
 	GLOBAL	BOSSF_ISTRAT
 	global	shrapfall_Istrat
+	global	bossFtur1_Istrat
+	global	bossFtur3_Istrat

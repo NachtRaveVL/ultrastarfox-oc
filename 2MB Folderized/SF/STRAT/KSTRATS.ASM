@@ -91,8 +91,33 @@ boss36demo_Istrat
 	s_copy_pos	y,x
 	s_add_alvar	W,y,al_worldz,#-40<<bossF_scale
 	s_set_alvar	B,y,al_roty,#deg180
+	s_init_anim	y,#0
 	s_set_strat	y,gnd_Istrat
-.nohead	s_set_strat	x,gnd_Istrat
+.nohead
+	s_make_childobjpos	#boss_F_8,#1,#-20<<bossF_scale,#-10<<bossF_scale,#30<<bossF_scale,boss36demo_port_Istrat
+	s_make_childobjpos	#boss_F_9,#3,#20<<bossF_scale,#-10<<bossF_scale,#30<<bossF_scale,boss36demo_port_Istrat
+	s_set_strat	x,boss36demo_strat
+boss36demo_port_Istrat
+	s_start_strat
+	lda	logicframe
+	lsr	a
+	lsr	a
+	lsr	a
+	and	#7
+	cmp	#4
+	bcc	.open
+	eor	#7
+.open	ora	#128
+	sta	al_animframe,x
+	s_end_strat
+boss36demo_strat
+	s_start_strat
+	s_jmp_notdelay	5,.end
+	s_set_objtobeplayer	y
+	s_weapon_pos	#(-20<<bossF_scale)>>weapon_scale,#(-10<<bossF_scale)>>weapon_scale,#(30<<bossF_scale)>>weapon_scale
+	s_weapon_rots2obj	y
+	s_fire_weapon	x,RELSLOWELASER
+.end
 	s_end_strat
 
 ;-----------------------------------------------------------------------------
