@@ -1062,7 +1062,6 @@ boss36_ihan	q_start
 	q_set_cnt		#200
 	q_set_viewdist		#1500
 	q_set_viewhgt		#-200
-	q_rept_strat		#300
 	q_init_text		boss36txt
 	q_set_text		boss36txt2
 	q_end
@@ -1130,7 +1129,7 @@ boss31demo	defdemo	0000,3000,0000,375<<bossa_scale,boss_A_2,bossA_Istrat
 boss32demo	defdemo	0000,000,000,1200,boss_0_1,webmonster_istrat,2_4
 boss33demo	defdemo	0000,-100,0000,2500,boss_d_1,chicken_istrat
 boss35demo	defdemo	0000,0000,0000,2500,boss_2_2,boss2_istrat
-boss36demo	defdemo	0000,0000,2000,2500,boss_f_4,gnd_Istrat
+boss36demo	defdemo	0000,0000,2000,2500,boss_f_4,boss36demo_Istrat
 boss37demo	defdemo	0000,-100,-500,0000,boss_f_4,airship_istrat
 
 bossfinaldemo	defdemo	0000,0,Space_viewCY,-200,face_b,monolith_istrat

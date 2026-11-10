@@ -84,6 +84,17 @@ deg30	equ	deg60/2
 
 
 
+; Great Commander showcase uses a static assembly, not the live boss AI.
+boss36demo_Istrat
+	s_start_strat
+	s_make_obj	#boss_F_2,.nohead
+	s_copy_pos	y,x
+	s_add_alvar	W,y,al_worldz,#-40<<bossF_scale
+	s_set_alvar	B,y,al_roty,#deg180
+	s_set_strat	y,gnd_Istrat
+.nohead	s_set_strat	x,gnd_Istrat
+	s_end_strat
+
 ;-----------------------------------------------------------------------------
 zaco4_Istrat		;find a pillar, shoot it, fly away
 	s_start_strat

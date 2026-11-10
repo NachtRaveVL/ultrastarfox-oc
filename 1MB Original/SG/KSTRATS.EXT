@@ -18,6 +18,7 @@
 	global	bholeexit2_istrat
 	global	bholeexit3_istrat
 
+	global	boss36demo_Istrat
 	global	theend_t_istrat
 	global	theend_h_istrat
 	global	theend_e_istrat

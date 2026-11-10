@@ -19,15 +19,15 @@ pdist	=	960+(20*pipescale)
 	mappipewait	
 	mappipe	-69,100,-1,0,3
 	mappipewait	
-	mappipe	-80,140,0,1,0
+	mappipe	-80,141,0,1,0
 	mappipewait	
-	mappipe	-69,180,1,0,3
+	mappipe	-70,182,1,0,3
 	mappipewait	
-	mappipe	-40,210,2,1,2
+	mappipe	-50,195,2,1,2	; segments around here like to clip
 	mappipewait	
-	mappipe	0,221,3,0,5
+	mappipe	-1,220,3,0,5
 	mappipewait	
-	mappipe	40,221,3,0,4
+	mappipe	39,221,3,0,4
 
 
 	mappipe	80,232,2,0,2
@@ -37,11 +37,11 @@ pdist	=	960+(20*pipescale)
 	mappipewait	
 	mappipe	109,342,-1,1,3
 	mappipewait	
-	mappipe	80,371,-2,0,2
+	mappipe	80,373,-2,0,2
 	mappipewait	
 
-	mappipe	69,382,-3,0,3
-	mappipe	40,393,-2,1,2
+	mappipe 70,381,-3,0,3
+	mappipe	42,392,-2,1,2	; segments around here like to clip
 	mappipe	11,423,-1,1,2
 
 	mappipe	0,463,0,0,0
