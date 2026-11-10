@@ -868,7 +868,7 @@ boss_2_1_f1	Faces
 	ifne	DO_HDR
 
 BOSS_2_2
-	ShapeHdr	BOSS_2_2_P,0,BOSS_2_2_F,0,0,0,0,boss2_scale,0,27,20+10,27,29,id_0_c,0,0,0,0,<BOSS_2_2>
+	ShapeHdr	BOSS_2_2_P,0,BOSS_2_2_F,0,0,0,0,boss2_scale,0,27,20,27,29,id_0_c,0,0,0,0,<BOSS_2_2>
 	elseif
 BOSS_2_2_P
 	datahdr

@@ -312,7 +312,7 @@ boss_8_1_col	colbox	boss_8_1_col1,0,-15,0,norot,30,20,20,HF1,0,boss8_scale
 boss_8_1_col1	colbox	0,0,-85,0,norot,30,20,20,HF1,0,boss8_scale
 
 boss_f_col	colbox	boss_f_col1,0,-20,-25,roty,20,10,15,HF1,0,bossF_scale
-boss_f_col1	colbox	0,0,0,0,norot,60,10,60,HF1,0,bossF_scale
+boss_f_col1	colbox	0,0,2,0,norot,60,8,60,HF1,0,bossF_scale
 
 evader_col		colbox	evader_col1,0,0,0,norot,300,300,300,HF1,0
 evader_col1		colbox	0,0,0,0,norot,70,60,45,HF2,0
