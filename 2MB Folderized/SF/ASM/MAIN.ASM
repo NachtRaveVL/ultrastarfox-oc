@@ -677,7 +677,7 @@ maketotalscore
 
 	lda	#msg_total&WM ; Load MARIO text data for "TOTAL SCORE" into A
 	ldx	#0 ; Load 0 into X
-	ldy	#-2050 ; Load -1600 into Y
+	ldy	#-1900 ; Load -1900 into Y
 	jsr	makeendobj ; Go to makeendobj subroutine to create text on screen
 	setpath ; Set PATH
 	a16 ; Set A to 16 bit
@@ -710,7 +710,7 @@ maketotalscore
 	ora	#0 ; OR A with 0
 	je	.sub10do ; Jump tp sub10do if equal?
 	ldx	#-300 ; Load -300 into X
-	ldy	#-1900 ; Load -1900 into Y
+	ldy	#-1920 ; Load -1920 into Y
 	jsr	makeendobjn ; Go to makeendobjn subroutine to create text on screen
 	setpath ; Set PATH
 .sub10do	lda	cla2 ; Load target % var into A
@@ -725,22 +725,22 @@ maketotalscore
 	txa ; Transfer X to A
 	ora	#0 ; OR A with 0
 	ldx	#-150 ; Load -150 into X
-	ldy	#-1900 ; Load -1900 into Y
+	ldy	#-1920 ; Load -1920 into Y
 	jsr	makeendobjn ; Go to makeendobjn subroutine to create text on screen
 	setpath ; Set PATH
 .sub1do	lda	cla2 ; Load target % var into A
 	ldx	#000 ; Load 000 into X
-	ldy	#-1900 ; Load -1900 into Y
+	ldy	#-1920 ; Load -1920 into Y
 	jsr	makeendobjn ; Go to makeendobjn subroutine to create text on screen
 	setpath ; Set PATH
 	lda	#0 ; Load 0 into A
 	ldx	#150 ; Load 150 into X
-	ldy	#-1900 ; Load -1900 into Y
+	ldy	#-1920 ; Load -1920 into Y
 	jsr	makeendobjn ; Go to makeendobjn subroutine to create text on screen
 	setpath ; Set PATH
 	lda	#0 ; Load 0 into A
 	ldx	#300 ; Load 300 into X
-	ldy	#-1900 ; Load -1900 into Y
+	ldy	#-1920 ; Load -1920 into Y
 	jsr	makeendobjn ; Go to makeendobjn subroutine to create text on screen
 	setpath ; Set PATH
 

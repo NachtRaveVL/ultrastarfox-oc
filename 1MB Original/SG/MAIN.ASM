@@ -657,7 +657,7 @@ maketotalscore
 
 	lda	#msg_total&WM
 	ldx	#0
-	ldy	#-2050
+	ldy	#-1900
 	jsr	makeendobj
 	setpath
 	a16
@@ -690,7 +690,7 @@ maketotalscore
 	ora	#0
 	je	.sub10do
 	ldx	#-300
-	ldy	#-1900
+	ldy	#-1920
 	jsr	makeendobjn
 	setpath
 .sub10do	lda	cla2
@@ -705,22 +705,22 @@ maketotalscore
 	txa
 	ora	#0
 	ldx	#-150
-	ldy	#-1900
+	ldy	#-1920
 	jsr	makeendobjn
 	setpath
 .sub1do	lda	cla2
 	ldx	#000
-	ldy	#-1900
+	ldy	#-1920
 	jsr	makeendobjn
 	setpath
 	lda	#0
 	ldx	#150
-	ldy	#-1900
+	ldy	#-1920
 	jsr	makeendobjn
 	setpath
 	lda	#0
 	ldx	#300
-	ldy	#-1900
+	ldy	#-1920
 	jsr	makeendobjn
 	setpath
 
