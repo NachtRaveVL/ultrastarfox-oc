@@ -47,10 +47,9 @@ FASTROM		equ 1
 ; [0 = off, 1 = on]
 fast		equ 1
 
-; NR-RetroWorks 26 MHz GSU-1 target (provisional, chip dependent).
-; CLSR=1: 26 MHz effective; legacy reference is 21.47727 MHz, not 10.73864.
-; round(256 * 21477270 / 26000000) = 211 (211.4685 before rounding).
-logicframestep  equ 211
+; round(256 * 21477270 / 33000000) = ~166 (replace 33000000 with overclock
+; frequency and redo this calculation if you want to use a different clock)
+logicframestep	equ	166
 
 ; Enable/disable Super FX instruction cache [0 = off, 1 = on]
 ; you should have no good reason to ever switch this off, as it makes performance much, much worse.
